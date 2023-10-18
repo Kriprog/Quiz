@@ -30,6 +30,7 @@ fetchData()
 <template>
   <div class="about">
     <h1>{{ message }}</h1>
+    <h1>Test</h1>
     <div>
       <label for="email" class="block text-sm font-medium leading-6 text-white-900">Email</label>
       <div class="mt-2">
