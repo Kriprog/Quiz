@@ -12,7 +12,7 @@ public class QuizController {
 
     @GetMapping("/api/quiz")
     public Map<String, String> demo () {
-        return Map.of("message", "It is Wednesday!");
+        return Map.of("message", "Wednesday is almost over!");
     }
 
     @PostMapping("/api/quiz")
