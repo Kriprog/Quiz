@@ -12,3 +12,5 @@ create table User_account
 
 insert into User_account (name, password, email, highscore)
 values ('TestKasutaja', 'Salajane', 'test@mail.ee', 0);
+
+ALTER USER postgres WITH PASSWORD 'postgres';
