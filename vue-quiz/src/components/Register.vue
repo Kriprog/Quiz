@@ -1,5 +1,5 @@
 <script setup>
-//import RegisterItem from './RegisterItem.vue'
+import RegisterItem from './RegisterItem.vue'
 import DocumentationIcon from './icons/IconDocumentation.vue'
 import ToolingIcon from './icons/IconTooling.vue'
 import EcosystemIcon from './icons/IconEcosystem.vue'
