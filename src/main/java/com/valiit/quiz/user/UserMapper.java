@@ -9,8 +9,8 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     // UserHighscoreDto toUserDto(User user);
-    User toUser(CreateUserDto createUserDto);
+    UserAccount toUser(CreateUserDto createUserDto);
     // method overloading
-    CreateUserDto toUserDto(User user);
+    CreateUserDto toUserDto(UserAccount user);
 }
 
