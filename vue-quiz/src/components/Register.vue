@@ -1,19 +1,19 @@
 <script setup>
 import {ref} from "vue";
 
-let usernameField = ref()
-let emailField = ref()
-let passwordField = ref()
+const usernameField = ref()
+const emailField = ref()
+const passwordField = ref()
 
 async function send() {
   const data = {
-    username: usernameField.value,
+    name: usernameField.value,
     email: emailField.value,
     password: passwordField.value,
     highscore: 0,
 
   }
-  const response = await fetch("/user-controller/api/register/", {
+  const response = await fetch("/api/register", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(data)
@@ -35,7 +35,7 @@ async function send() {
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 
-      <form class="space-y-6" action="/user-controller/api/register/" method="POST">
+
 
         <div>
           <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
@@ -72,7 +72,7 @@ async function send() {
             Register
           </button>
         </div>
-      </form>
+
 
       <p class="mt-10 text-center text-sm text-gray-500">
         Already have an account?

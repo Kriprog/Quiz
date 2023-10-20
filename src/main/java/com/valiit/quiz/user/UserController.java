@@ -14,10 +14,10 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "user-controller")
+@RequestMapping(path = "api")
 public class UserController {
     private final UserRepository userRepository;
-    @PostMapping("/api/register")
+    @PostMapping("/register")
     public void createUser(@RequestBody @Valid CreateUserDto createUserDto) {
         System.out.println("Please");
             String sha256hex = "";
