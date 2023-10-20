@@ -7,7 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class User {
+// andmebaasi tabel user_account = UserAccount
+
+public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_account_id")
     @SequenceGenerator(name="user_account_id", sequenceName = "user_account_id_seq", allocationSize=1)

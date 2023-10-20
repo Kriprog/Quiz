@@ -5,12 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateUserDto(
-        @NotBlank(message = "minu veateate sisu: postedName on kohustuslik")
+        @NotBlank(message = "Error: Username is mandatory")
         String name,
         @NotNull
         String password,
         @NotNull
-        @Email(message = "postedEmail peab vastama e-maili formaadile", regexp = "[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}")
+        @Email(message = "Error: Email must be in e-mail format", regexp = "[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}")
         String email,
         Integer highscore
 
