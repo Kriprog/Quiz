@@ -17,9 +17,9 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping(path = "user-controller")
 public class UserController {
     private final UserRepository userRepository;
-    @PostMapping("user")
+    @PostMapping("/api/register")
     public void createUser(@RequestBody @Valid CreateUserDto createUserDto) {
-
+        System.out.println("Please");
             String sha256hex = "";
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -29,6 +29,7 @@ public class UserController {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+        System.out.println(sha256hex);
         UserAccount user = UserMapper.INSTANCE.toUser(createUserDto);
         user.setPassword(sha256hex);
 
