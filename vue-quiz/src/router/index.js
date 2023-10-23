@@ -1,11 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignInViewView from '../views/SignInView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import QuestionsPage from '../components/QuestionsPage.vue';
+import StartQuestionsPage from "@/components/StartQuestionsPage.vue";
 
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/start-questions',
+      name: 'StartQuestionsPage',
+      component: StartQuestionsPage,
+    },
+    {
+      path: '/questions',  // Define a custom route path
+      name: 'QuestionsPage',
+      component: QuestionsPage,
+    },
     {
       path: '/',
       name: 'signin',
