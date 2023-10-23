@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "api")
@@ -59,5 +61,10 @@ public class UserController {
             System.out.println("invalid password");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
         }
+    }
+    @GetMapping("highscores")
+    public ResponseEntity<List<UserAccount>> getTop10HighScores() {
+        List<UserAccount> top10HighScores = userService.getTop10HighScores();
+        return ResponseEntity.ok(top10HighScores);
     }
 }
