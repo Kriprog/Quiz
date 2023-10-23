@@ -54,6 +54,8 @@ public class UserController {
 
         if (PasswordManager.verifyPassword(enteredPassword, storedPasswordHash)) {
             System.out.println("login worked for " + userAccount);
+            String sessionToken = SessionManager.generateSessionToken();
+            SessionManager.storeSessionToken(userAccount.getId(), sessionToken, String.valueOf(SessionManager.expirationTimestamp));
             return ResponseEntity.ok("Login successful");
         } else {
             System.out.println("invalid password");
