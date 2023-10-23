@@ -6,12 +6,12 @@ const email = ref('');
 const password = ref('');
 const loginMessage = ref('');
 const router = useRouter();
-const sessionToken = ref(''); // Store the session token here
+// const sessionToken = ref(''); // Store the session token here
 
 async function send() {
   const data = {
     email: email.value,
-    enteredPassword: password.value
+    password: password.value
   }
   fetch('/api/login', {
     method: 'POST',
@@ -21,7 +21,7 @@ async function send() {
       .then(response => {
         if (response.ok) {
           // Access the X-Session-Token header and store it
-          sessionToken.value = response.headers.get('X-Session-Token');
+          window.sessionStorage.setItem('session', response.headers.get('X-Session-Token'));
           // Handle a successful login here
           router.push('/start-questions');
         } else {

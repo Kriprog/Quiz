@@ -31,45 +31,41 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public void login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<String> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
         System.out.println(loginRequestDTO.email());
         System.out.println(loginRequestDTO.password());
 
-    }
+        String email = loginRequestDTO.email();
+        String enteredPassword = loginRequestDTO.password();
 
-//    @PostMapping("login")
-//    public ResponseEntity<String> login(
-//            @RequestParam String email,
-//            @RequestParam String enteredPassword) {
-//
-//        System.out.println("received email: " + email);
-//        System.out.println("received password: " + enteredPassword);
-//
-//        if (email == null || email.isEmpty() || enteredPassword == null || enteredPassword.isEmpty()) {
-//            System.out.println("invalid input");
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid input");
-//        }
-//
-//        UserAccount userAccount = userService.getUserByEmail(email);
-//
-//        if (userAccount == null) {
-//            System.out.println("useraccount not found");
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Useraccount not found");
-//        }
-//
-//        String storedPasswordHash = userAccount.getPassword();
-//        System.out.println("databaasis: " + storedPasswordHash);
-//        System.out.println("sisestatud: " + PasswordManager.hashPassword(enteredPassword));
-//
-//        if (PasswordManager.verifyPassword(enteredPassword, storedPasswordHash)) {
-//            System.out.println("login worked for " + userAccount);
-//            String sessionToken = SessionManager.generateSessionToken();
-//            SessionManager.storeSessionToken(userAccount.getId(), sessionToken, String.valueOf(SessionManager.expirationTimestamp));
-//            return ResponseEntity.ok()
-//                    .header("X-Session-Token", sessionToken)
-//                    .body("Login successful");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login credentials");
-//        }
-//    }
+        if (email == null || email.isEmpty() || enteredPassword == null || enteredPassword.isEmpty()) {
+            System.out.println("invalid input");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid input");
+       }
+        UserAccount userAccount = userService.getUserByEmail(email);
+
+        if (userAccount == null) {
+            System.out.println("useraccount not found");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Useraccount not found");
+        }
+
+        String storedPasswordHash = userAccount.getPassword();
+        System.out.println("databaasis: " + storedPasswordHash);
+        System.out.println("sisestatud: " + PasswordManager.hashPassword(enteredPassword));
+
+        if (PasswordManager.verifyPassword(enteredPassword, storedPasswordHash)) {
+            System.out.println("login worked for " + userAccount);
+            String sessionToken = SessionManager.generateSessionToken();
+            SessionManager.storeSessionToken(userAccount.getId(), sessionToken, String.valueOf(SessionManager.expirationTimestamp));
+            return ResponseEntity.ok()
+                    .header("X-Session-Token", sessionToken)
+                    .body("Login successful");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login credentials");
+        }
+    }
 }
+
+
+
+
