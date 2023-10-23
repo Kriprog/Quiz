@@ -14,7 +14,7 @@ const send = () => {
   })
       .then(response => {
         if (response.ok) {
-          router.push('/about');
+          router.push('/start-questions');
         } else {
           throw new Error('Request failed');
         }
