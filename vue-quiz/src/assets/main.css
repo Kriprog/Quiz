@@ -23,13 +23,37 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    display: flex;
-    place-items: center;
+
+    flex-direction: column; /* Change to column layout */
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
   }
 
   #app {
-    display: grid;
+
+    grid-template-areas:
+      "header"
+      "body"
+      "footer";
+    grid-template-rows: auto 1fr auto;
     grid-template-columns: 1fr 1fr;
+    max-width: 1280px;
+    margin: 0 auto;
     padding: 0 2rem;
   }
+  header {
+    grid-area: header;
+    /* Adjust header styles */
+  }
+
+  main {
+    grid-area: body;
+    /* Adjust body content styles */
+  }
+
+  footer {
+    grid-area: footer;
+    /* Adjust footer styles */
+}
 }

@@ -1,8 +1,10 @@
 <script setup>
 
+import Header from "@/components/Header.vue";
 </script>
 
 <template>
+  <Header />
   <div class="page">
     <div class="container">
       <h1 class="header">You're now signed in!</h1>
@@ -14,6 +16,7 @@
         </button>
       </router-link>
     </div>
+
   </div>
 </template>
 
