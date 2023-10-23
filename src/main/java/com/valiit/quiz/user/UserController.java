@@ -1,11 +1,12 @@
 package com.valiit.quiz.user;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -28,38 +29,47 @@ public class UserController {
 
         System.out.println(savedUser);
     }
-    @GetMapping("login")
-    public ResponseEntity<String> login(
-            @RequestParam String email,
-            @RequestParam String enteredPassword) {
 
-        System.out.println("received email: " + email);
-        System.out.println("received password: " + enteredPassword);
+    @PostMapping("login")
+    public void login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+        System.out.println(loginRequestDTO.email());
+        System.out.println(loginRequestDTO.password());
 
-        if (email == null || email.isEmpty() || enteredPassword == null || enteredPassword.isEmpty()) {
-            System.out.println("invalid input");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid input");
-        }
-
-        UserAccount userAccount = userService.getUserByEmail(email);
-
-        if (userAccount == null) {
-            System.out.println("useraccount not found");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Useraccount not found");
-        }
-
-        String storedPasswordHash = userAccount.getPassword();
-        System.out.println("databaasis: " + storedPasswordHash);
-        System.out.println("sisestatud: " + PasswordManager.hashPassword(enteredPassword));
-
-        if (PasswordManager.verifyPassword(enteredPassword, storedPasswordHash)) {
-            System.out.println("login worked for " + userAccount);
-            String sessionToken = SessionManager.generateSessionToken();
-            SessionManager.storeSessionToken(userAccount.getId(), sessionToken, String.valueOf(SessionManager.expirationTimestamp));
-            return ResponseEntity.ok("Login successful");
-        } else {
-            System.out.println("invalid password");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
-        }
     }
+
+//    @PostMapping("login")
+//    public ResponseEntity<String> login(
+//            @RequestParam String email,
+//            @RequestParam String enteredPassword) {
+//
+//        System.out.println("received email: " + email);
+//        System.out.println("received password: " + enteredPassword);
+//
+//        if (email == null || email.isEmpty() || enteredPassword == null || enteredPassword.isEmpty()) {
+//            System.out.println("invalid input");
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid input");
+//        }
+//
+//        UserAccount userAccount = userService.getUserByEmail(email);
+//
+//        if (userAccount == null) {
+//            System.out.println("useraccount not found");
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Useraccount not found");
+//        }
+//
+//        String storedPasswordHash = userAccount.getPassword();
+//        System.out.println("databaasis: " + storedPasswordHash);
+//        System.out.println("sisestatud: " + PasswordManager.hashPassword(enteredPassword));
+//
+//        if (PasswordManager.verifyPassword(enteredPassword, storedPasswordHash)) {
+//            System.out.println("login worked for " + userAccount);
+//            String sessionToken = SessionManager.generateSessionToken();
+//            SessionManager.storeSessionToken(userAccount.getId(), sessionToken, String.valueOf(SessionManager.expirationTimestamp));
+//            return ResponseEntity.ok()
+//                    .header("X-Session-Token", sessionToken)
+//                    .body("Login successful");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid login credentials");
+//        }
+//    }
 }
