@@ -3,6 +3,7 @@ import SignInViewView from '../views/SignInView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import QuestionsPage from '../components/QuestionsPage.vue';
 import StartQuestionsPage from "@/components/StartQuestionsPage.vue";
+import QuizView from '../views/QuizView.vue';
 
 
 const router = createRouter({
@@ -35,7 +36,12 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
-    }
+    },
+    {
+      path: '/quiz',
+      name: 'quiz',
+      component: QuizView
+    },
   ]
 })
 
