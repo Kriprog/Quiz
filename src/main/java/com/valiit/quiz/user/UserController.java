@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "api")
@@ -77,6 +79,11 @@ public class UserController {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("message", message);
         return errorResponse;
+    }
+    @GetMapping("highscores")
+    public ResponseEntity<List<UserAccount>> getTop10HighScores() {
+        List<UserAccount> top10HighScores = userService.getTop10HighScores();
+        return ResponseEntity.ok(top10HighScores);
     }
 }
 

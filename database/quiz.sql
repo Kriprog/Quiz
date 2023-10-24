@@ -37,3 +37,16 @@ INSERT INTO Questions (question_text, correct_answer, option1, option2, option3)
 VALUES ('What is the capital of France?', 'Paris', 'London', 'Berlin', 'Madrid'),
        ('Which planet is known as the "Red Planet"?', 'Mars', 'Earth', 'Venus', 'Jupiter')
 ;
+
+ALTER USER postgres WITH PASSWORD 'postgres';
+select * from User_account;
+
+-- Insert a new user with a high score
+INSERT INTO User_account (name, password, email, highscore)
+VALUES ('NewUser1', 'NewUserPassword1', 'newuser1@mail.com', 1000);
+
+-- Insert another user with a high score
+INSERT INTO User_account (name, password, email, highscore)
+VALUES ('NewUser14', 'NewUserPassword2', 'newuser14@mail.com', 1800);
+
+

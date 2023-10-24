@@ -1,10 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import SignInViewView from '../views/SignInView.vue'
-import RegisterView from '../views/RegisterView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import SignInView from '../views/SignInView.vue';
+import RegisterView from '../views/RegisterView.vue';
 import QuestionsPage from '../components/QuestionsPage.vue';
 import StartQuestionsPage from "@/components/StartQuestionsPage.vue";
 import QuizView from '../views/QuizView.vue';
-
+import HighScores from "../components/HighScores.vue"; // Import the HighScores component
+import HighScoreView from "../views/HighScoreView.vue"; // Import the HighScoreView component
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,14 +16,14 @@ const router = createRouter({
       component: StartQuestionsPage,
     },
     {
-      path: '/questions',  // Define a custom route path
+      path: '/questions',
       name: 'QuestionsPage',
       component: QuestionsPage,
     },
     {
       path: '/',
       name: 'signin',
-      component: SignInViewView
+      component: SignInView
     },
     {
       path: '/register',
@@ -32,9 +33,6 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
     },
     {
@@ -42,7 +40,17 @@ const router = createRouter({
       name: 'quiz',
       component: QuizView
     },
+    {
+      path: '/highscores', // Add the HighScores route
+      name: 'HighScores',
+      component: HighScores,
+    },
+    {
+      path: '/highscoreview', // Add the HighScoreView route
+      name: 'HighScoreView',
+      component: HighScoreView,
+    },
   ]
-})
+});
 
-export default router
+export default router;
