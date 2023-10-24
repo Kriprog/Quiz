@@ -1,11 +1,16 @@
 package com.valiit.quiz.user;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import lombok.RequiredArgsConstructor;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -28,36 +33,53 @@ public class UserController {
 
         System.out.println(savedUser);
     }
-    @GetMapping("login")
-    public ResponseEntity<String> login(
-            @RequestParam String email,
-            @RequestParam String enteredPassword) {
 
-        System.out.println("received email: " + email);
-        System.out.println("received password: " + enteredPassword);
+    @PostMapping("login")
+    public ResponseEntity<Map<String, String>> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+        String email = loginRequestDTO.email();
+        String enteredPassword = loginRequestDTO.password();
 
         if (email == null || email.isEmpty() || enteredPassword == null || enteredPassword.isEmpty()) {
-            System.out.println("invalid input");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid input");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(createErrorResponse("Invalid input"));
         }
 
         UserAccount userAccount = userService.getUserByEmail(email);
 
         if (userAccount == null) {
-            System.out.println("useraccount not found");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Useraccount not found");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(createErrorResponse("Useraccount not found"));
         }
 
         String storedPasswordHash = userAccount.getPassword();
-        System.out.println("databaasis: " + storedPasswordHash);
-        System.out.println("sisestatud: " + PasswordManager.hashPassword(enteredPassword));
 
         if (PasswordManager.verifyPassword(enteredPassword, storedPasswordHash)) {
-            System.out.println("login worked for " + userAccount);
-            return ResponseEntity.ok("Login successful");
+            String sessionToken = SessionManager.generateSessionToken();
+            SessionManager.storeSessionToken(userAccount.getId(), sessionToken, String.valueOf(SessionManager.expirationTimestamp));
+
+            Map<String, String> responseMap = new HashMap<>();
+            responseMap.put("message", "Login successful");
+            responseMap.put("sessionToken", sessionToken);
+            responseMap.put("name", userAccount.getName());
+            responseMap.put("highscore", String.valueOf(userAccount.getHighscore()));
+
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("X-Session-Token", sessionToken);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(responseMap);
         } else {
-            System.out.println("invalid password");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(createErrorResponse("Invalid login credentials"));
         }
     }
+
+    private Map<String, String> createErrorResponse(String message) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", message);
+        return errorResponse;
+    }
 }
+
+
+
+

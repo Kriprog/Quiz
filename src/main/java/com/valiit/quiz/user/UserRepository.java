@@ -7,5 +7,4 @@ public interface UserRepository extends CrudRepository<UserAccount, Integer> {
 
     UserAccount findByEmail(@Param("email") String email);
 
-
 }
