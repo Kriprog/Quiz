@@ -1,29 +1,47 @@
 <script setup>
 import { ref } from 'vue';
-import {useRouter} from "vue-router";
+import { useRouter } from 'vue-router';
+import {setSession} from "@/stores/session";
 
 const email = ref('');
 const password = ref('');
 const loginMessage = ref('');
 const router = useRouter();
+// const sessionToken = ref(''); // Store the session token here
 
-
-const send = () => {
-  fetch(`/api/login?email=${email.value}&enteredPassword=${password.value}`, {
-    method: "GET",
+async function send() {
+  const data = {
+    email: email.value,
+    password: password.value
+  }
+  fetch('/api/login', {
+    method: 'POST',
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(data),
   })
-      .then(response => {
+      .then(async response => {
         if (response.ok) {
-          router.push('/start-questions');
+          const responseData = await response.json();
+
+          setSession(
+              response.headers.get('X-Session-Token'),
+              responseData.name,
+              responseData.highscore
+          );
+
+          console.log('Name:', responseData.name);
+          console.log('Highscore:', responseData.highscore);
+
+          await router.push('/start-questions');
         } else {
-          throw new Error('Request failed');
+          throw new Error('Login failed');
         }
       })
       .catch(error => {
-        console.error("An error occurred:", error);
-        loginMessage.value = "An error occurred. Please try again later.";
+        console.error('An error occurred:', error);
+        loginMessage.value = 'Login failed. Please try again.';
       });
-}
+};
 </script>
 
 <template>

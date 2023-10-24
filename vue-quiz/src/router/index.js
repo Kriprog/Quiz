@@ -3,6 +3,7 @@ import SignInView from '../views/SignInView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import QuestionsPage from '../components/QuestionsPage.vue';
 import StartQuestionsPage from "@/components/StartQuestionsPage.vue";
+import QuizView from '../views/QuizView.vue';
 import HighScores from "../components/HighScores.vue"; // Import the HighScores component
 import HighScoreView from "../views/HighScoreView.vue"; // Import the HighScoreView component
 
@@ -33,6 +34,11 @@ const router = createRouter({
       path: '/about',
       name: 'about',
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/quiz',
+      name: 'quiz',
+      component: QuizView
     },
     {
       path: '/highscores', // Add the HighScores route
