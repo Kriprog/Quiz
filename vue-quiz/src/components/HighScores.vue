@@ -1,22 +1,33 @@
 <template>
   <div>
     <h2 class="text-2xl font-bold mb-4">Top Ten High Scores</h2>
-    <table class="table-auto">
-      <thead>
-      <tr>
-        <th class="px-4 py-2">Name</th>
-        <th class="px-4 py-2">High Score</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="score in highScores" :key="score.id">
-        <td class="border px-4 py-2">{{ score.name }}</td>
-        <td class="border px-4 py-2">{{ score.highscore }}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="overflow-x-auto">
+      <table class="min-w-min border border-gray-200">
+        <thead>
+        <tr>
+          <th class="px-4 py-2 border-r border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+            Name
+          </th>
+          <th class="px-4 py-2 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+            High Score
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="score in highScores" :key="score.id">
+          <td class="px-4 py-2 border-r border-b border-gray-200">
+            {{ score.name }}
+          </td>
+          <td class="px-4 py-2 border-b border-gray-200">
+            {{ score.highscore }}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
+
 
 
 <script setup>
@@ -34,4 +45,3 @@ onMounted(async () => {
   }
 });
 </script>
-
