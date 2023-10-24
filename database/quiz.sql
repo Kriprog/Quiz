@@ -36,5 +36,4 @@ VALUES ('What is the capital of France?', 'Paris', 'London', 'Berlin', 'Madrid')
 ('Who painted the Mona Lisa?', 'Leonardo da Vinci', 'Vincent van Gogh', 'Pablo Picasso', 'Rembrandt');
 ;
 
-ALTER USER postgres WITH PASSWORD 'postgres';
-select * from User_account
+
