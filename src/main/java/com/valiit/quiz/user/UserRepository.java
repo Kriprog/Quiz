@@ -10,7 +10,7 @@ public interface UserRepository extends CrudRepository<UserAccount, Integer> {
 
     UserAccount findByEmail(@Param("email") String email);
 
-    @Query("SELECT u FROM UserAccount u ORDER BY u.highscore DESC")
+    @Query("SELECT u FROM UserAccount u ORDER BY u.highscore DESC LIMIT 10")
     List<UserAccount> findTop10HighScores();
 
 
