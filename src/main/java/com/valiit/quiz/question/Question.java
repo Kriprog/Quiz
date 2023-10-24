@@ -17,4 +17,5 @@ public class Question {
     private String option1;
     private String option2;
     private String option3;
+    // DTO kus on questionText ja massiiv valikutest Set<String> options
 }

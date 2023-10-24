@@ -1,11 +1,8 @@
 package com.valiit.quiz.question;
-import com.valiit.quiz.utility.Shuffler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class QuestionService {
@@ -18,27 +15,34 @@ public class QuestionService {
     }
 
 
+  /*  public QuestionDto getRandomQuestion() {
+        QuestionDto randomQuestion = questionRepository.findRandomQuestion();
+        QuestionDto responseDto = new QuestionDto();
 
-    public Question getRandomQuestion() {
-        // Fetch a random question from the database
+        // Set values for the QuestionResponseDto
+        responseDto.setQuestionText(randomQuestion.getQuestionText());
+        responseDto.setOptions(new HashSet<>(randomQuestion.getOptions()));
+
+
+        return responseDto;
+    }*/
+
+    public QuestionDto getOptionsForRandomQuestion() {
         Question randomQuestion = questionRepository.findRandomQuestion();
 
-        // Create a list of all four options
-        List<String> options = new ArrayList<>();
+        QuestionDto questionDto = new QuestionDto();
+
+        questionDto.setQuestionText(randomQuestion.getQuestion_text());
+        questionDto.setCorrectAnswer(randomQuestion.getCorrect_answer());
+
+        Set<String> options = new HashSet<>();
+
         options.add(randomQuestion.getOption1());
         options.add(randomQuestion.getOption2());
         options.add(randomQuestion.getOption3());
-        options.add(randomQuestion.getCorrect_answer());
 
-        // Shuffle the positions of all four options
-        List<String> shuffledOptions = Shuffler.shuffleOptions(options);
+        questionDto.setOptions(options);
 
-        // Set the shuffled options back to the Question entity
-        randomQuestion.setOption1(shuffledOptions.get(0));
-        randomQuestion.setOption2(shuffledOptions.get(1));
-        randomQuestion.setOption3(shuffledOptions.get(2));
-        randomQuestion.setCorrect_answer(shuffledOptions.get(3));
-
-        return randomQuestion;
-    }
+        return questionDto;
+}
 }

@@ -8,7 +8,7 @@ import Header from "@/components/Header.vue";
   <div class="page">
     <div class="container">
       <h1 class="header">You're now signed in!</h1>
-      <router-link to="/questions">
+      <router-link to="/quiz">
         <button
             type="button"
             class="btn">
