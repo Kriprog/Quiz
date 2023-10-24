@@ -5,8 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
-
 @RestController
 public class QuestionController {
 
@@ -23,7 +21,7 @@ public class QuestionController {
 
     @GetMapping("/api/quiz")
         public ResponseEntity<QuestionDto> getRandomQuestionOptions() {
-        QuestionDto questionDto = questionService.getOptionsForRandomQuestion();
+        QuestionDto questionDto = questionService.getRandomQuestion();
             return ResponseEntity.ok(questionDto);
     }
 

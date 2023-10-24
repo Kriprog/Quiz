@@ -38,6 +38,11 @@ VALUES ('What is the capital of France?', 'Paris', 'London', 'Berlin', 'Madrid')
        ('Which planet is known as the "Red Planet"?', 'Mars', 'Earth', 'Venus', 'Jupiter')
 ;
 
+INSERT INTO Questions (question_text, correct_answer, option1, option2, option3)
+VALUES ('What is the larges' ||
+        't mammal in the world?', 'Blue Whale', 'Elephant', 'Giraffe', 'Hippopotamus')
+;
+
 ALTER USER postgres WITH PASSWORD 'postgres';
 select * from User_account;
 

@@ -12,8 +12,8 @@ public class Question {
     @Id
    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questions_id") //For future implementation of user added questions
     private Integer id;
-    private String question_text;
-    private String correct_answer;
+    private String questionText;
+    private String correctAnswer;
     private String option1;
     private String option2;
     private String option3;
