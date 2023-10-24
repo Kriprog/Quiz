@@ -13,7 +13,7 @@ async function send() {
   }
   const response = await fetch("/api/register", {
     method: "POST",
-    headers: {"Content-Type": "application/json" /*, "Token": window.sessionStorage.getItem('session')*/},
+    headers: {"Content-Type": "application/json"},
     body: JSON.stringify(data)
   });
 

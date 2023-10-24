@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import {setSession} from "@/stores/session";
 
 const email = ref('');
 const password = ref('');
@@ -18,12 +19,20 @@ async function send() {
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(data),
   })
-      .then(response => {
+      .then(async response => {
         if (response.ok) {
-          // Access the X-Session-Token header and store it
-          window.sessionStorage.setItem('session', response.headers.get('X-Session-Token'));
-          // Handle a successful login here
-          router.push('/start-questions');
+          const responseData = await response.json();
+
+          setSession(
+              response.headers.get('X-Session-Token'),
+              responseData.name,
+              responseData.highscore
+          );
+
+          console.log('Name:', responseData.name);
+          console.log('Highscore:', responseData.highscore);
+
+          await router.push('/start-questions');
         } else {
           throw new Error('Login failed');
         }
