@@ -6,7 +6,6 @@ export const session = reactive({
     highscore: window.sessionStorage.getItem('highscore') || 0, // Retrieve highscore from sessionStorage
 });
 
-// Function to set the session data
 export function setSession(sessionToken, name, highscore) {
     session.sessionToken = sessionToken;
     session.name = name;
@@ -17,12 +16,34 @@ export function setSession(sessionToken, name, highscore) {
 
 }
 
-// Function to clear the session data (e.g., on logout)
-export function clearSession() {
-    session.sessionToken = null;
-    session.name = null;
-    session.highscore = 0;
-    window.sessionStorage.removeItem('session');
-    window.sessionStorage.removeItem('name');
-    window.sessionStorage.removeItem('highscore');
+export async function clearSession() {
+    try {
+        // Send a request to your back-end to invalidate the session
+        const response = await fetch('/api/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Set the content type to JSON if you're sending JSON data
+                'X-Session-Token': session.sessionToken // Include the session token in the header
+            },
+            // Optionally, if you need to send data in the request body:
+            body: JSON.stringify({
+                // Add any data you need to send in the body here
+            })
+        });
+
+        if (response.ok) {
+            // Clear session data on the front-end
+            session.sessionToken = null;
+            session.name = null;
+            session.highscore = 0;
+            window.sessionStorage.removeItem('session');
+            window.sessionStorage.removeItem('name');
+            window.sessionStorage.removeItem('highscore');
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
 }
+
+
+

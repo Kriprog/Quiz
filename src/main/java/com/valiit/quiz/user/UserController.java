@@ -1,5 +1,6 @@
 package com.valiit.quiz.user;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,24 @@ public class UserController {
                     .body(responseMap);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(createErrorResponse("Invalid login credentials"));
+        }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        // Get the session token from the request
+        String sessionToken = request.getHeader("X-Session-Token");
+        System.out.println("This is what reaches UserController: " + sessionToken);
+
+        // Use the session token to invalidate the session on the back-end
+        boolean sessionInvalidated = SessionManager.invalidateSession(sessionToken);
+
+        if (sessionInvalidated) {
+            // Session invalidated successfully; return 204 No Content
+            return ResponseEntity.noContent().build();
+        } else {
+            // Failed to invalidate the session; return 500 Internal Server Error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to logout");
         }
     }
 
