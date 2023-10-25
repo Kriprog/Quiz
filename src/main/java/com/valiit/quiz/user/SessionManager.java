@@ -59,5 +59,27 @@ public class SessionManager {
         return new Timestamp(calendar.getTime().getTime());
     }
 
+    public static boolean invalidateSession(String sessionToken) {
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5433/quiz", "postgres", "postgres")) {
+            String sql = "DELETE FROM Sessions WHERE session_token = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, sessionToken);
+
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                System.out.println("SQL: " + sql);  // Add this line
+                System.out.println("Session Token: " + sessionToken);  // Add this line
+
+                return rowsAffected > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 
 }
