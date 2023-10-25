@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import {ref} from 'vue';
 
 const questionDto = ref(null);
 const selectedAnswer = ref(null);
@@ -14,27 +14,37 @@ const fetchRandomQuestion = async () => {
     }
     const data = await response.json();
     questionDto.value = data;
-
-    questionDto.value.options.push(questionDto.value.correctAnswer);
-
-    questionDto.value.options = shuffleArray(questionDto.value.options);
   } catch (error) {
     console.error(error);
   }
 };
 
-const checkAnswer = () => {
-  answerSubmitted.value = true;
-  isCorrectAnswer.value = selectedAnswer.value === questionDto.value.correctAnswer;
+const checkAnswer = async () => {
+  try {
+    const response = await fetch('/api/check-answer', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: questionDto.value.id,
+        selectedAnswer: selectedAnswer.value,
+      }),
+    });
+
+    if (!response.ok) {
+      throw Error('Network response was not ok');
+    }
+
+    const result = await response.json();
+
+    answerSubmitted.value = true;
+    isCorrectAnswer.value = result.isCorrect;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
 </script>
 
 <style scoped>

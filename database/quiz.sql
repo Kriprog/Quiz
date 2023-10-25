@@ -54,4 +54,5 @@ VALUES ('NewUser1', 'NewUserPassword1', 'newuser1@mail.com', 1000);
 INSERT INTO User_account (name, password, email, highscore)
 VALUES ('NewUser14', 'NewUserPassword2', 'newuser14@mail.com', 1800);
 
+SELECT correct_Answer FROM question WHERE id = 9;
 

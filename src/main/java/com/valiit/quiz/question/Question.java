@@ -1,5 +1,6 @@
 package com.valiit.quiz.question;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
@@ -13,6 +14,7 @@ public class Question {
    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questions_id") //For future implementation of user added questions
     private Integer id;
     private String questionText;
+    @Column(name = "correct_answer")
     private String correctAnswer;
     private String option1;
     private String option2;

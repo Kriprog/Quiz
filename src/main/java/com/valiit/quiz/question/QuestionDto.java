@@ -12,5 +12,6 @@ import java.util.Set;
         private Integer id;
         private String questionText;
         private List<String> options;
+        private String selectedAnswer;
 
     }

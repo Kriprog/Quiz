@@ -45,32 +45,32 @@ public class QuestionService {
         Question randomQuestion = questionRepository.findRandomQuestion();
 
         QuestionDto questionDto = new QuestionDto();
-
         questionDto.setId(randomQuestion.getId());
         questionDto.setQuestionText(randomQuestion.getQuestionText());
 
         List<String> options = new ArrayList<>();
-
         options.add(randomQuestion.getOption1());
         options.add(randomQuestion.getOption2());
         options.add(randomQuestion.getOption3());
         options.add(randomQuestion.getCorrectAnswer());
 
-        System.out.println("Question" + randomQuestion.getQuestionText());
-        System.out.println("Before shuffle option 1: " + options.get(0));
-        System.out.println("Before shuffle option 2: " + options.get(1));
-        System.out.println("Before shuffle option 3: " + options.get(2));
-        System.out.println("Before shuffle correct answer: " + options.get(3));
-
         Shuffle.shuffle(options);
-
-        System.out.println("After shuffle option 1: " + options.get(0));
-        System.out.println("After shuffle option 2: " + options.get(1));
-        System.out.println("After shuffle option 3: " + options.get(2));
-        System.out.println("After shuffle correct answer: " + options.get(3));
 
         questionDto.setOptions(options);
 
         return questionDto;
     }
+
+    public boolean checkAnswer(Integer id, String selectedAnswer) {
+        // Retrieve the correct answer for the given questionId from the database
+        String correctAnswer = questionRepository.findCorrectAnswerById(id);
+
+        if (correctAnswer != null) {
+            // Compare the selected answer with the correct answer
+            return selectedAnswer != null && selectedAnswer.trim().equalsIgnoreCase(correctAnswer.trim());
+        } else {
+            // Handle the case where correctAnswer is null (e.g., return false)
+            return false;
+        }
+}
 }
