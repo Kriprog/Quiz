@@ -64,7 +64,6 @@ public class UserController {
             responseMap.put("name", userAccount.getName());
             responseMap.put("highscore", String.valueOf(userAccount.getHighscore()));
 
-
             HttpHeaders headers = new HttpHeaders();
             headers.add("X-Session-Token", sessionToken);
 
