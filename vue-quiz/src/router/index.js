@@ -4,8 +4,21 @@ import RegisterView from '../views/RegisterView.vue';
 import QuestionsPage from '../components/QuestionsPage.vue';
 import StartQuestionsPage from "@/components/StartQuestionsPage.vue";
 import QuizView from '../views/QuizView.vue';
-import HighScores from "../components/HighScores.vue"; // Import the HighScores component
-import HighScoreView from "../views/HighScoreView.vue"; // Import the HighScoreView component
+import HighScores from "../components/HighScores.vue";
+import HighScoreView from "../views/HighScoreView.vue";
+import { session } from '@/stores/session';
+import Header from "../components/Header.vue";
+
+
+const requireAuth = (to, from, next) => {
+  if (session.sessionToken) {
+    // User is authenticated, allow access to the route
+    next();
+  } else {
+    // User is not authenticated, redirect to the sign-in page
+    next({ name: 'signin' });
+  }
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,11 +27,13 @@ const router = createRouter({
       path: '/start-questions',
       name: 'StartQuestionsPage',
       component: StartQuestionsPage,
+      beforeEnter: requireAuth,
     },
     {
       path: '/questions',
       name: 'QuestionsPage',
       component: QuestionsPage,
+      beforeEnter: requireAuth,
     },
     {
       path: '/',
@@ -33,22 +48,26 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/AboutView.vue'),
+      beforeEnter: requireAuth,
     },
     {
       path: '/quiz',
       name: 'quiz',
-      component: QuizView
+      component: QuizView,
+      beforeEnter: requireAuth,
     },
     {
       path: '/highscores', // Add the HighScores route
       name: 'HighScores',
       component: HighScores,
+      beforeEnter: requireAuth,
     },
     {
       path: '/highscoreview', // Add the HighScoreView route
       name: 'HighScoreView',
       component: HighScoreView,
+      beforeEnter: requireAuth,
     },
   ]
 });
