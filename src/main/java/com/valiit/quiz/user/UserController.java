@@ -63,6 +63,7 @@ public class UserController {
             responseMap.put("sessionToken", sessionToken);
             responseMap.put("name", userAccount.getName());
             responseMap.put("highscore", String.valueOf(userAccount.getHighscore()));
+            responseMap.put("userId", String.valueOf(userAccount.getId()));
 
             HttpHeaders headers = new HttpHeaders();
             headers.add("X-Session-Token", sessionToken);
@@ -105,7 +106,7 @@ public class UserController {
         return ResponseEntity.ok(top10HighScores);
     }
 
-    @PatchMapping("/users/highscore")
+    @PatchMapping("/users/highscore/{userId}")
     public ResponseEntity<Void> updateUserHighScore(@PathVariable Integer userId, @RequestBody UserHighscoreDto userHighscoreDto) {
         UserAccount user = userService.findUserById(userId);
         if (user != null) {

@@ -5,15 +5,23 @@ export const session = reactive({
     name: window.sessionStorage.getItem('name') || null, // Retrieve user's name from sessionStorage
     highscore: window.sessionStorage.getItem('highscore') || 0, // Retrieve highscore from sessionStorage
     score: 0,
+    userId: window.sessionStorage.getItem('userId'),
+
 });
 
-export function setSession(sessionToken, name, highscore) {
+export function setSession(sessionToken, name, highscore, userId) {
     session.sessionToken = sessionToken;
     session.name = name;
     session.highscore = highscore;
+    session.userId = userId;
     window.sessionStorage.setItem('session', sessionToken);
     window.sessionStorage.setItem('name', name);
     window.sessionStorage.setItem('highscore', highscore);
+    window.sessionStorage.setItem('userId', userId);
+    console.log("userId set in session.userId:", session.userId);
+    console.log("userId set in window.sessionStorage:", window.sessionStorage.getItem('userId'));
+    console.log("highscore set in window.sessionStorage:", window.sessionStorage.getItem('highscore'));
+    console.log("name set in window.sessionStorage:", window.sessionStorage.getItem('name'));
 
 }
 
@@ -37,9 +45,11 @@ export async function clearSession() {
             session.sessionToken = null;
             session.name = null;
             session.highscore = 0;
+            session.userId = null;
             window.sessionStorage.removeItem('session');
             window.sessionStorage.removeItem('name');
             window.sessionStorage.removeItem('highscore');
+            window.sessionStorage.setItem('userId');
         }
     } catch (error) {
         console.error('An error occurred:', error);
@@ -53,7 +63,7 @@ export function increaseHighScore(points) {
         window.sessionStorage.setItem('highscore', session.highscore);
 
         // Send the new high score to the database (replace with your API endpoint)
-        sendHighScoreToDatabase(session.highscore)
+        sendHighScoreToDatabase(session.highscore, session.userId)
             .then(() => {
                 console.log('High score updated in the database.');
             })
@@ -71,10 +81,11 @@ export function resetScore() {
     session.score = 0;
 }
 
-function sendHighScoreToDatabase(highscore, userId) {
+function sendHighScoreToDatabase(highscore, userId ) {
+    console.log("Updating high score for user with ID: " + userId);
     // Implement the logic to send the high score to the database
     // Use a PATCH request to update the high score for the specified user
-    const endpoint = '/api/users/highscore'; // Replace with your actual API endpoint
+    const endpoint = `/api/users/highscore/${userId}`; // Replace with your actual API endpoint
 
     return fetch(endpoint, {
         method: 'PATCH',
@@ -82,10 +93,13 @@ function sendHighScoreToDatabase(highscore, userId) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ highscore }),
+
     }).then((response) => {
         if (!response.ok) {
+            console.error('Failed to update high score in the database');
             throw new Error('Failed to update high score in the database');
         }
+        console.log("High score updated successfully.");
     });
 }
 

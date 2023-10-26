@@ -27,8 +27,7 @@ public class SessionManager {
     }
 
     public static boolean storeSessionToken(int userId, String sessionToken, String expirationTimestamp) {
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5433/quiz", "postgres", "postgres")) {
+        try (Connection connection = DriverManager.getConnection(AppConfig.DATABASE_URL)) {
             String sql = "INSERT INTO Sessions (session_token, user_id, expiration_date) VALUES (?, ?, ?)";
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -60,8 +59,7 @@ public class SessionManager {
     }
 
     public static boolean invalidateSession(String sessionToken) {
-        try (Connection connection = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5433/quiz", "postgres", "postgres")) {
+        try (Connection connection = DriverManager.getConnection(AppConfig.DATABASE_URL)) {
             String sql = "DELETE FROM Sessions WHERE session_token = ?";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
