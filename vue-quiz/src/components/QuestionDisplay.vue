@@ -1,10 +1,14 @@
 <script setup>
 import {ref} from 'vue';
-
+import { toRef } from 'vue';
+import { session, updateScore, increaseHighScore, resetScore } from '@/stores/session'; // Adjust the path to match the actual location of your session.js file
 const questionDto = ref(null);
 const selectedAnswer = ref(null);
 const answerSubmitted = ref(false);
 const isCorrectAnswer = ref(false);
+
+const score = toRef(session, 'score');
+const highscore = toRef(session, 'highscore');
 
 const fetchRandomQuestion = async () => {
   try {
@@ -39,10 +43,30 @@ const checkAnswer = async () => {
     const result = await response.json();
 
     answerSubmitted.value = true;
-    isCorrectAnswer.value = result.isCorrect;
+    isCorrectAnswer.value = result.correct;
+    return result.correct;
+
   } catch (error) {
     console.error(error);
+    return false;
   }
+};
+
+const submitAnswer = (selectedOption) => {
+  selectedAnswer.value = selectedOption;
+  checkAnswer(selectedOption)
+      .then((isCorrect) => {
+        if (isCorrect) {
+          updateScore(1); // Update the score using the session function
+          increaseHighScore(1); // Update the highscore using the session function
+        } else {
+          resetScore(); // Reset the score using the session function
+        }
+        fetchRandomQuestion(); // Fetch the next question
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
 };
 
 </script>
@@ -55,21 +79,19 @@ const checkAnswer = async () => {
     <button @click="fetchRandomQuestion">Get Random Question</button>
     <div v-if="questionDto">
       <p>Question: {{ questionDto.questionText }}</p>
-      <form @submit.prevent="checkAnswer">
+      <div>
         <p>Options:</p>
         <div v-for="option in questionDto.options" :key="option">
-          <label>
-            <input type="radio" v-model="selectedAnswer" :value="option" />
-            {{ option }}
-          </label>
+          <button @click="submitAnswer(option)">{{ option }}</button>
         </div>
-        <button type="submit">Submit Answer</button>
-      </form>
+      </div>
       <p v-if="answerSubmitted">
         Your answer is: {{ selectedAnswer }}
         <span v-if="isCorrectAnswer"> (Correct)</span>
         <span v-else> (Incorrect)</span>
       </p>
+      <p>Score: {{ score }}</p>
+      <p>High Score: {{ highscore }}</p>
     </div>
   </div>
 </template>

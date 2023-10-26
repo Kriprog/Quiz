@@ -1,7 +1,14 @@
 package com.valiit.quiz.user;
 
-public record UserHighscoreDto() {
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    static Integer id;
-    static Integer highscore;
+@Getter
+@Setter
+@NoArgsConstructor
+public class UserHighscoreDto {
+
+    private Integer id;
+    private Integer highscore;
 }
