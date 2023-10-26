@@ -23,5 +23,24 @@ public class UserService {
         // Call the custom repository method to get the top 10 high scores
         return userRepository.findTop10HighScores();
     }
+    public UserAccount findUserById(Integer id) {
+        return userRepository.findById(id).orElse(null);
+    }
 
+    public Integer getHighScore(Integer userId) {
+        UserAccount user = findUserById(userId);
+        if (user != null) {
+            return user.getHighscore();
+        }
+        // You might want to handle the case where the user is not found, e.g., return a default value or throw an exception.
+        return null;
+    }
+
+    public void updateUserHighScore(Integer userId, Integer newHighScore) {
+        UserAccount user = findUserById(userId);
+        if (user != null) {
+            user.setHighscore(newHighScore);
+            userRepository.save(user); // Use the save method to update the user
+        }
+    }
 }

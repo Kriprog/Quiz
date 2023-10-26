@@ -1,10 +1,14 @@
 <script setup>
 import {ref} from 'vue';
-
+import { toRef } from 'vue';
+import { session, updateScore, increaseHighScore, resetScore } from '@/stores/session'; // Adjust the path to match the actual location of your session.js file
 const questionDto = ref(null);
 const selectedAnswer = ref(null);
 const answerSubmitted = ref(false);
 const isCorrectAnswer = ref(false);
+
+const score = toRef(session, 'score');
+const highscore = toRef(session, 'highscore');
 
 const fetchRandomQuestion = async () => {
   try {
@@ -39,10 +43,30 @@ const checkAnswer = async () => {
     const result = await response.json();
 
     answerSubmitted.value = true;
-    isCorrectAnswer.value = result.isCorrect;
+    isCorrectAnswer.value = result.correct;
+    return result.correct;
+
   } catch (error) {
     console.error(error);
+    return false;
   }
+};
+
+const submitAnswer = (selectedOption) => {
+  selectedAnswer.value = selectedOption;
+  checkAnswer(selectedOption)
+      .then((isCorrect) => {
+        if (isCorrect) {
+          updateScore(1); // Update the score using the session function
+          increaseHighScore(1); // Update the highscore using the session function
+        } else {
+          resetScore(); // Reset the score using the session function
+        }
+        fetchRandomQuestion(); // Fetch the next question
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
 };
 
 </script>
@@ -51,39 +75,26 @@ const checkAnswer = async () => {
 </style>
 
 <template>
-  <div class="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
-    <button @click="fetchRandomQuestion" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mb-4">
-      Get Random Question
-    </button>
-    <div v-if="questionDto" class="p-4 bg-gray-100 rounded-lg">
-      <p class="text-xl font-semibold mb-4">Question: {{ questionDto.questionText }}</p>
-      <form @submit.prevent="checkAnswer">
-        <p class="mb-2">Options:</p>
-        <div class="grid grid-cols-2 gap-4 mb-4">
-          <button type="button" v-for="option in questionDto.options" :key="option" @click="selectedAnswer = option"
-                  :class="{
-              'bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded': selectedAnswer !== option,
-              'bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded': selectedAnswer === option && isCorrectAnswer,
-              'bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded': selectedAnswer === option && !isCorrectAnswer
-            }"
-          >
-            {{ option }}
-          </button>
+  <div>
+    <button @click="fetchRandomQuestion">Get Random Question</button>
+    <div v-if="questionDto">
+      <p>Question: {{ questionDto.questionText }}</p>
+      <div>
+        <p>Options:</p>
+        <div v-for="option in questionDto.options" :key="option">
+          <button @click="submitAnswer(option)">{{ option }}</button>
         </div>
-        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
-          Submit Answer
-        </button>
-      </form>
-      <p v-if="answerSubmitted" class="mt-4">
+      </div>
+      <p v-if="answerSubmitted">
         Your answer is: {{ selectedAnswer }}
         <span v-if="isCorrectAnswer" class="text-green-600 font-semibold"> (Correct)</span>
         <span v-else class="text-red-600 font-semibold"> (Incorrect)</span>
       </p>
+      <p>Score: {{ score }}</p>
+      <p>High Score: {{ highscore }}</p>
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 
