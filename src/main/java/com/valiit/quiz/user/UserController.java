@@ -98,11 +98,25 @@ public class UserController {
         errorResponse.put("message", message);
         return errorResponse;
     }
+
     @GetMapping("highscores")
     public ResponseEntity<List<UserAccount>> getTop10HighScores() {
         List<UserAccount> top10HighScores = userService.getTop10HighScores();
         return ResponseEntity.ok(top10HighScores);
     }
+
+    @PatchMapping("/users/highscore")
+    public ResponseEntity<Void> updateUserHighScore(@PathVariable Integer userId, @RequestBody UserHighscoreDto userHighscoreDto) {
+        UserAccount user = userService.findUserById(userId);
+        if (user != null) {
+            user.setHighscore(userHighscoreDto.getHighscore());
+            userService.updateUserHighScore(userId, userHighscoreDto.getHighscore()); // Pass userId and new high score
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
 
 

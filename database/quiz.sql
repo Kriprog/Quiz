@@ -10,7 +10,7 @@ create table User_account
     highscore integer      not null
 );
 
-create table Question
+create table Questions
 (
     id             serial PRIMARY KEY,
     question_text  text not null,
@@ -33,12 +33,12 @@ create table Sessions
 insert into User_account (name, password, email, highscore)
 values ('TestKasutaja', 'Salajane', 'test@mail.ee', 0);
 
-INSERT INTO Question (question_text, correct_answer, option1, option2, option3)
+INSERT INTO Questions (question_text, correct_answer, option1, option2, option3)
 VALUES ('What is the capital of France?', 'Paris', 'London', 'Berlin', 'Madrid'),
        ('Which planet is known as the "Red Planet"?', 'Mars', 'Earth', 'Venus', 'Jupiter')
 ;
 
-INSERT INTO Question (question_text, correct_answer, option1, option2, option3)
+INSERT INTO Questions (question_text, correct_answer, option1, option2, option3)
 VALUES
     ('What is the largest mammal in the world?', 'Blue Whale', 'Elephant', 'Giraffe', 'Hippopotamus'),
     ('Which gas do plants absorb from the atmosphere during photosynthesis?', 'Carbon Dioxide', 'Oxygen', 'Nitrogen', 'Hydrogen'),
@@ -64,9 +64,9 @@ VALUES
 
 ALTER USER postgres WITH PASSWORD 'postgres';
 
-drop table question;
+DELETE FROM Questions;
 
-DELETE FROM Question;
+select * from Questions;
 
 select * from Question;
 
