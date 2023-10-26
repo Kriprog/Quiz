@@ -1,5 +1,13 @@
 @import './base.css';
 
+body {
+  background-image: url('background.jpg');
+  background-color: #222222;
+  background-size: cover; /* Cover the entire viewport */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Don't repeat the image */
+}
+
 #app {
   max-width: 1280px;
   margin: 0 auto;

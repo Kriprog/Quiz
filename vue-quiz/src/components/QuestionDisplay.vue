@@ -87,8 +87,8 @@ const submitAnswer = (selectedOption) => {
       </div>
       <p v-if="answerSubmitted">
         Your answer is: {{ selectedAnswer }}
-        <span v-if="isCorrectAnswer"> (Correct)</span>
-        <span v-else> (Incorrect)</span>
+        <span v-if="isCorrectAnswer" class="text-green-600 font-semibold"> (Correct)</span>
+        <span v-else class="text-red-600 font-semibold"> (Incorrect)</span>
       </p>
       <p>Score: {{ score }}</p>
       <p>High Score: {{ highscore }}</p>
