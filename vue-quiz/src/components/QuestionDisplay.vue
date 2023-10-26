@@ -51,28 +51,39 @@ const checkAnswer = async () => {
 </style>
 
 <template>
-  <div>
-    <button @click="fetchRandomQuestion">Get Random Question</button>
-    <div v-if="questionDto">
-      <p>Question: {{ questionDto.questionText }}</p>
+  <div class="max-w-lg mx-auto p-4 bg-white shadow-md rounded-lg">
+    <button @click="fetchRandomQuestion" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mb-4">
+      Get Random Question
+    </button>
+    <div v-if="questionDto" class="p-4 bg-gray-100 rounded-lg">
+      <p class="text-xl font-semibold mb-4">Question: {{ questionDto.questionText }}</p>
       <form @submit.prevent="checkAnswer">
-        <p>Options:</p>
-        <div v-for="option in questionDto.options" :key="option">
-          <label>
-            <input type="radio" v-model="selectedAnswer" :value="option" />
+        <p class="mb-2">Options:</p>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <button type="button" v-for="option in questionDto.options" :key="option" @click="selectedAnswer = option"
+                  :class="{
+              'bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded': selectedAnswer !== option,
+              'bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded': selectedAnswer === option && isCorrectAnswer,
+              'bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded': selectedAnswer === option && !isCorrectAnswer
+            }"
+          >
             {{ option }}
-          </label>
+          </button>
         </div>
-        <button type="submit">Submit Answer</button>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+          Submit Answer
+        </button>
       </form>
-      <p v-if="answerSubmitted">
+      <p v-if="answerSubmitted" class="mt-4">
         Your answer is: {{ selectedAnswer }}
-        <span v-if="isCorrectAnswer"> (Correct)</span>
-        <span v-else> (Incorrect)</span>
+        <span v-if="isCorrectAnswer" class="text-green-600 font-semibold"> (Correct)</span>
+        <span v-else class="text-red-600 font-semibold"> (Incorrect)</span>
       </p>
     </div>
   </div>
 </template>
+
+
 
 <style scoped>
 

@@ -1,21 +1,24 @@
 <template>
   <div class="min-h-full">
-    <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
+    <Disclosure as="nav" class="bg-gray-100" v-slot="{ open }">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <UserIcon class="h-6 w-6" aria-hidden="true" />
+              <CodeBracketIcon class="h-6 w-6" aria-hidden="true"  />
             </div>
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
-                <a v-for="item in navigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
+                <a v-for="item in navigation"
+                   :key="item.name"
+                   :href="item.href"
+                   :class="[item.button ? 'text-gray-800 hover:bg-white hover:text-gray-950 font-semibold': 'text-gray-800 hover:bg-transparent hover:text-gray-800', 'rounded-md px-3 py-2 text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</a>
               </div>
             </div>
           </div>
           <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
-              <button @click="logout" type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+              <button @click="logout" type="button"  title="Logout" class="relative rounded-full bg-gray-50 p-1 text-gray-600 hover:text-gray-950 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                 <PowerIcon class="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
@@ -28,7 +31,9 @@
 
     <header class="bg-white shadow">
       <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
+        <p class="text-1xl tracking-tight text-gray-400">If you are enjoying this game please consider donating money to us:  <a href=""><CreditCardIcon class="h-6 w-6" aria-hidden="true" /></a>
+        </p>
+
       </div>
     </header>
     <main>
@@ -42,7 +47,7 @@
 import {clearSession, session} from '@/stores/session'
 
 import { Disclosure } from '@headlessui/vue'
-import { Bars3Icon, UserIcon, XMarkIcon, PowerIcon } from '@heroicons/vue/24/outline'
+import { CodeBracketIcon, CreditCardIcon, PowerIcon } from '@heroicons/vue/24/outline'
 import {useRouter} from "vue-router";
 
 const user = {
@@ -51,10 +56,11 @@ const user = {
   highscore: session.highscore
   }
 const navigation = [
-  { name: 'Hello, ' + user.name, href: '#', current: true },
-  { name: 'Current highscore: ' + user.highscore, href: '#', current: false },
-  { name: 'Current score: 1', href: '#', current: false },
-  { name: 'Highscoretable', href: '/highscores', current: false },
+  { name: 'Hello, ' + user.name + '!', button: false },
+  { name: 'Start cleaning', href: '/quiz', button: true },
+  { name: 'Current score: 1', button: false },
+  { name: 'Current highscore: ' + user.highscore, button: false },
+  { name: 'Top 10 players', href: '/highscoreview', button: true },
 ]
 
 const router = useRouter();
