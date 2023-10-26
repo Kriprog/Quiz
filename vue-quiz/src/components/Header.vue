@@ -1,11 +1,11 @@
-<template>
+<template xmlns:href="http://www.w3.org/1999/xhtml">
   <div class="min-h-full">
     <Disclosure as="nav" class="bg-gray-100" v-slot="{ open }">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <CodeBracketIcon class="h-6 w-6" aria-hidden="true"  />
+              <a><CodeBracketIcon class="h-6 w-6" aria-hidden="true"  /></a>
             </div>
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
