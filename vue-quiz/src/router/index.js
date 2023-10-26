@@ -1,13 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import SignInView from '../views/SignInView.vue';
 import RegisterView from '../views/RegisterView.vue';
-import QuestionsPage from '../components/QuestionsPage.vue';
 import WelcomePage from "@/components/Welcome.vue";
 import QuizView from '../views/QuizView.vue';
 import HighScores from "../components/HighScores.vue";
 import HighScoreView from "../views/HighScoreView.vue";
 import { session } from '@/stores/session';
-import Header from "../components/Header.vue";
 
 
 const requireAuth = (to, from, next) => {
@@ -30,12 +28,6 @@ const router = createRouter({
       beforeEnter: requireAuth,
     },
     {
-      path: '/questions',
-      name: 'QuestionsPage',
-      component: QuestionsPage,
-      beforeEnter: requireAuth,
-    },
-    {
       path: '/',
       name: 'signin',
       component: SignInView
@@ -44,12 +36,6 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue'),
-      beforeEnter: requireAuth,
     },
     {
       path: '/quiz',

@@ -69,33 +69,46 @@ const submitAnswer = (selectedOption) => {
       });
 };
 
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  // Automatically call fetchRandomQuestion when the page is loaded
+  fetchRandomQuestion();
+});
+
 </script>
+
 
 <style scoped>
 </style>
-
 <template>
-  <div>
-    <button @click="fetchRandomQuestion">Get Random Question</button>
-    <div v-if="questionDto">
-      <p>Question: {{ questionDto.questionText }}</p>
-      <div>
-        <p>Options:</p>
-        <div v-for="option in questionDto.options" :key="option">
-          <button @click="submitAnswer(option)">{{ option }}</button>
+  <div class=" flex flex-col items-center justify-center" >
+    <div v-if="questionDto" class="max-w-md p-4 bg-white bg-opacity-80 rounded-lg shadow-lg">
+      <p class="text-gray-800 text-2xl">{{ questionDto.questionText }}</p>
+      <div class="mt-4">
+        <div class="grid grid-cols-2 gap-4">
+          <button
+              v-for="option in questionDto.options"
+              :key="option"
+              @click="submitAnswer(option)"
+              class="text-white font-medium py-2 px-4 rounded bg-violet-500 hover:bg-violet-600 focus:outline-none"
+          >
+            {{ option }}
+          </button>
         </div>
       </div>
-      <p v-if="answerSubmitted">
+      <p v-if="answerSubmitted" class="mt-4">
         Your answer is: {{ selectedAnswer }}
         <span v-if="isCorrectAnswer" class="text-green-600 font-semibold"> (Correct)</span>
         <span v-else class="text-red-600 font-semibold"> (Incorrect)</span>
       </p>
-      <p>Score: {{ score }}</p>
-      <p>High Score: {{ highscore }}</p>
+      <div class="mt-4">
+        <p class="text-lg font-semibold">Score: {{ score }}</p>
+        <p class="text-lg font-semibold">High Score: {{ highscore }}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-
 </style>
