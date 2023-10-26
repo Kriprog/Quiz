@@ -35,12 +35,15 @@ public class UserService {
         // You might want to handle the case where the user is not found, e.g., return a default value or throw an exception.
         return null;
     }
-
     public void updateUserHighScore(Integer userId, Integer newHighScore) {
+        System.out.println("Updating high score for user with ID: " + userId);
         UserAccount user = findUserById(userId);
         if (user != null) {
+            System.out.println("User found. Current high score: " + user.getHighscore());
             user.setHighscore(newHighScore);
+            System.out.println("Updating high score to: " + newHighScore);
             userRepository.save(user); // Use the save method to update the user
+            System.out.println("High score updated successfully.");
         }
     }
 }

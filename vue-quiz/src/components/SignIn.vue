@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import {setSession} from "@/stores/session";
 
 const email = ref('');
+const userId = ref('');
 const password = ref('');
 const loginMessage = ref('');
 const router = useRouter();
@@ -26,7 +27,8 @@ async function send() {
           setSession(
               response.headers.get('X-Session-Token'),
               responseData.name,
-              responseData.highscore
+              responseData.highscore,
+              responseData.userId
           );
 
           console.log('Name:', responseData.name);
