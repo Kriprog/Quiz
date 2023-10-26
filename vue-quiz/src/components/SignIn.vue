@@ -32,7 +32,7 @@ async function send() {
           console.log('Name:', responseData.name);
           console.log('Highscore:', responseData.highscore);
 
-          await router.push('/start-questions');
+          await router.push('/welcome');
         } else {
           throw new Error('Login failed');
         }
