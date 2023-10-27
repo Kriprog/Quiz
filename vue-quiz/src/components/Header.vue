@@ -8,7 +8,7 @@
             <div class="flex h-16 items-center justify-between">
               <div class="flex items-center">
                 <div class="flex-shrink-0">
-                  <a><CodeBracketIcon class="h-6 w-6" aria-hidden="true" /></a>
+                  <router-link to="/welcome"><img class="mx-auto h-8 w-auto opacity-80" src="@/assets/codelogo.png" alt="Our logo"></router-link>
                 </div>
                 <div class="hidden md:block">
                   <div class="ml-10 flex items-baseline space-x-4">

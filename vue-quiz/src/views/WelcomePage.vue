@@ -1,6 +1,6 @@
 <template>
   <div class="center">
-    <StartQuestionsPage/>
+    <Welcome/>
   </div>
 </template>
 
@@ -12,3 +12,6 @@
   height: 100vh; /* Center vertically within the viewport. */
 }
 </style>
+<script setup>
+import Welcome from "@/components/Welcome.vue";
+</script>
