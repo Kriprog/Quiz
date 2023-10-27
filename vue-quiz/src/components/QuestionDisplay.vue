@@ -7,9 +7,6 @@ const selectedAnswer = ref(null);
 const answerSubmitted = ref(false);
 const isCorrectAnswer = ref(false);
 
-const score = toRef(session, 'score');
-const highscore = toRef(session, 'highscore');
-
 const fetchRandomQuestion = async () => {
   try {
     const response = await fetch('/api/quiz'); // Replace with your API endpoint

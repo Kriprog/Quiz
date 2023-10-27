@@ -44,7 +44,7 @@
 <script setup>
 import { clearSession, session } from '@/stores/session'
 import { Disclosure } from '@headlessui/vue'
-import { CodeBracketIcon, CreditCardIcon, PowerIcon } from '@heroicons/vue/24/outline'
+import { PowerIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from "vue-router"
 
 const user = {
@@ -64,7 +64,7 @@ const logout = () => {
   router.push('/'); // Replace '/login' with the path to your login page
 }
 
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 
 const navigation = computed(() => {
   return [
@@ -73,6 +73,13 @@ const navigation = computed(() => {
     { name: 'Current score: ' + session.score, button: false },
     { name: 'Current highscore: ' + session.highscore, button: false },
     { name: 'Top 10 players', href: '/highscoreview', button: true }
+  ]
+})
+
+watch(() => session.score, () => {
+  navigation.value = [
+      ...navigation.value,
+    { name: 'Current score: ' + session.score, button: false }
   ]
 })
 </script>
