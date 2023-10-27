@@ -7,14 +7,14 @@ import Header from "@/components/Header.vue";
   <Header />
   <div class="page">
     <div class="container">
-      <h1 class="header" >Welcome to the Clean Code Quiz!</h1>
-      <p class="text">Dive in, challenge yourself, and let's see how well you grasp the art of writing clean and beautiful code!</p>
+      <img class="mx-auto h-20 w-auto opacity-80" src="@/assets/codelogo.png" alt="Our logo">
+      <p class="text">Enjoy programming? Enjoy quizzes?</p>
       <br>
       <router-link to="/quiz">
         <button
             type="button"
             class="btn">
-          Start Quiz
+          Letsgo!
         </button>
       </router-link>
     </div>
@@ -34,7 +34,7 @@ import Header from "@/components/Header.vue";
   padding-top: 100px;
   overflow: hidden; /* Add overflow to the container */
   text-align: center;
-  color: rgb(73, 77, 151);
+  color: rgb(9, 9, 9);
 }
 
 .header {
@@ -48,7 +48,7 @@ import Header from "@/components/Header.vue";
 }
 
 .btn {
-  background-color: rgba(73, 77, 151, 0.65);
+  background-color: rgb(9, 9, 9);
   color: white;
   font-weight: bold;
   font-size: larger;
