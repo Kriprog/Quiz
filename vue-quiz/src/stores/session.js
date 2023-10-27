@@ -3,8 +3,8 @@ import { reactive } from 'vue';
 export const session = reactive({
     sessionToken: window.sessionStorage.getItem('session'), // Retrieve session token from sessionStorage
     name: window.sessionStorage.getItem('name') || null, // Retrieve user's name from sessionStorage
-    highscore: window.sessionStorage.getItem('highscore') || '0', // Retrieve highscore from sessionStorage
-    score: window.sessionStorage.getItem('score') || '0',
+    highscore: window.sessionStorage.getItem('highscore') || 0, // Retrieve highscore from sessionStorage
+    score: parseInt(window.sessionStorage.getItem('score')) || 0,
     userId: window.sessionStorage.getItem('userId'),
 
 });
@@ -15,16 +15,13 @@ export function setSession(sessionToken, name, highscore, userId, score) {
     session.highscore = highscore;
     session.userId = userId;
     session.score = score;
+    console.log("Before setting 'score':", session.score);
     window.sessionStorage.setItem('session', sessionToken);
     window.sessionStorage.setItem('name', name);
     window.sessionStorage.setItem('highscore', highscore);
     window.sessionStorage.setItem('userId', userId);
     window.sessionStorage.setItem('score', score);
-
-    console.log("userId set in session.userId:", session.userId);
-    console.log("userId set in window.sessionStorage:", window.sessionStorage.getItem('userId'));
-    console.log("highscore set in window.sessionStorage:", window.sessionStorage.getItem('highscore'));
-    console.log("name set in window.sessionStorage:", window.sessionStorage.getItem('name'));
+    console.log("After setting 'score':", session.score);
 
 }
 

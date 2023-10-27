@@ -7,9 +7,6 @@ const selectedAnswer = ref(null);
 const answerSubmitted = ref(false);
 const isCorrectAnswer = ref(false);
 
-const score = toRef(session, 'score');
-const highscore = toRef(session, 'highscore');
-
 const fetchRandomQuestion = async () => {
   try {
     const response = await fetch('/api/quiz'); // Replace with your API endpoint
@@ -105,8 +102,8 @@ onMounted(() => {
         <span v-else class="text-red-600 font-semibold"> (Incorrect)</span>
       </p>
       <div class="mt-4">
-        <p class="text-lg font-semibold">Score: {{ score }}</p>
-        <p class="text-lg font-semibold">High Score: {{ highscore }}</p>
+        <p class="text-lg font-semibold">Score: {{ session.score }}</p>
+        <p class="text-lg font-semibold">High Score: {{ session.highscore }}</p>
       </div>
     </div>
   </div>
