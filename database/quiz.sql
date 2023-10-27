@@ -40,7 +40,7 @@ DELETE FROM user_account;
 
 select * from user_account;
 
-ALTER TABLE user_account    ADD COLUMN highscore_date TIMESTAMP;
+ALTER TABLE user_account   ADD COLUMN highscore_date TIMESTAMP;
 
 
 INSERT INTO question (question_text, correct_answer, option1, option2, option3)

@@ -44,7 +44,7 @@
 <script setup>
 import { clearSession, session } from '@/stores/session'
 import { Disclosure } from '@headlessui/vue'
-import { CodeBracketIcon, CreditCardIcon, PowerIcon } from '@heroicons/vue/24/outline'
+import { PowerIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from "vue-router"
 
 const user = {

@@ -16,13 +16,11 @@ export function setSession(sessionToken, name, highscore, userId, score) {
     session.highscore = highscore;
     session.userId = userId;
     session.score = parseInt(score) || 0;
-    console.log("Before setting 'score':", session.score);
     window.sessionStorage.setItem('session', sessionToken);
     window.sessionStorage.setItem('name', name);
     window.sessionStorage.setItem('highscore', highscore);
     window.sessionStorage.setItem('userId', userId);
     window.sessionStorage.setItem('score', score);
-    console.log("After setting 'score':", session.score);
 
 }
 
@@ -87,9 +85,6 @@ export function resetScore() {
 }
 
 function sendHighScoreToDatabase(highscore, highscore_date, userId ) {
-    console.log("Updating high score for user with ID: " + userId);
-    // Implement the logic to send the high score to the database
-    // Use a PATCH request to update the high score for the specified user
     const endpoint = `/api/users/highscore/${userId}`; // Replace with your actual API endpoint
 
     return fetch(endpoint, {

@@ -2,7 +2,6 @@
 </script>
 
 <template>
-  <Header />
   <div class="page">
     <div class="container">
       <p class="header opacity-80">Enjoy programming? Enjoy quizzes?</p>
