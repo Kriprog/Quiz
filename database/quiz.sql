@@ -33,35 +33,6 @@ create table Sessions
 insert into User_account (name, password, email, highscore)
 values ('TestKasutaja', 'Salajane', 'test@mail.ee', 0);
 
-INSERT INTO question (question_text, correct_answer, option1, option2, option3)
-VALUES ('What is the capital of France?', 'Paris', 'London', 'Berlin', 'Madrid'),
-       ('Which planet is known as the "Red Planet"?', 'Mars', 'Earth', 'Venus', 'Jupiter')
-;
-
-INSERT INTO question (question_text, correct_answer, option1, option2, option3)
-VALUES
-    ('What is the largest mammal in the world?', 'Blue Whale', 'Elephant', 'Giraffe', 'Hippopotamus'),
-    ('Which gas do plants absorb from the atmosphere during photosynthesis?', 'Carbon Dioxide', 'Oxygen', 'Nitrogen', 'Hydrogen'),
-    ('Which country is known as the Land of the Rising Sun?', 'Japan', 'China', 'South Korea', 'Vietnam'),
-    ('What is the largest organ in the human body?', 'Skin', 'Heart', 'Liver', 'Lung'),
-    ('Which famous scientist developed the theory of general relativity?', 'Albert Einstein', 'Isaac Newton', 'Stephen Hawking', 'Galileo Galilei'),
-    ('What is the chemical symbol for the element gold?', 'Au', 'Ag', 'Fe', 'Cu'),
-    ('What is the tallest mountain in the world?', 'Mount Everest', 'K2', 'Kangchenjunga', 'Makalu'),
-    ('In which year did Christopher Columbus discover America?', '1492', '1512', '1475', '1526'),
-    ('What is the main function of the mitochondria in a cell?', 'Energy production', 'Protein synthesis', 'Cell division', 'Waste elimination'),
-    ('Which planet is known as the "Morning Star" or "Evening Star"?', 'Venus', 'Mars', 'Mercury', 'Jupiter'),
-    ('What is the chemical symbol for water?', 'H2O', 'CO2', 'O2', 'N2'),
-    ('Who wrote the play "Romeo and Juliet"?', 'William Shakespeare', 'Charles Dickens', 'Jane Austen', 'Mark Twain'),
-    ('Which gas is responsible for the Earth''s ozone layer?', 'Oxygen', 'Carbon Dioxide', 'Chlorofluorocarbons (CFCs)', 'Methane'),
-    ('What is the largest planet in our solar system?', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'),
-    ('Who is known as the "Father of Modern Physics"?', 'Albert Einstein', 'Isaac Newton', 'Niels Bohr', 'Galileo Galilei'),
-    ('Which gas do humans exhale when they breathe out?', 'Carbon Dioxide', 'Oxygen', 'Nitrogen', 'Helium'),
-    ('What is the chemical symbol for the element oxygen?', 'O2', 'H2O', 'N2', 'CO2'),
-    ('In which country can you visit the ancient city of Machu Picchu?', 'Peru', 'Mexico', 'Brazil', 'Chile'),
-    ('Who painted the "Mona Lisa"?', 'Leonardo da Vinci', 'Pablo Picasso', 'Vincent van Gogh', 'Claude Monet'),
-    ('Which gas is most abundant in the Earth''s atmosphere?', 'Nitrogen', 'Oxygen', 'Carbon Dioxide', 'Argon')
-;
-
 ALTER USER postgres WITH PASSWORD 'postgres';
 
 DELETE FROM question;
@@ -78,7 +49,6 @@ VALUES
     ('What does clean code suggest regarding meaningful variable names?', 'Use descriptive names that convey the purpose of the variable', 'Use short and cryptic names to save space', 'Avoid using variables in your code', 'Use random names for variables'),
     ('In clean code, what does the "Tell, Don''t Ask" principle recommend?', 'Encapsulate behavior within objects instead of querying object state', 'Always ask for object state without telling it what to do', 'Keep asking objects for their state in code', 'Ignore object state entirely'),
     ('What does the clean code principle "SOLID" stand for?', 'A set of five design principles for writing maintainable and scalable software', 'A set of code formatting guidelines', 'A set of best practices for code performance optimization', 'A set of rules for code comments'),
-    ('Why is clean code concerned with "Code Smells"?', 'To identify and refactor sections of code that may indicate deeper problems', 'To evaluate code for its aesthetic qualities', 'To check if code smells pleasant', 'To improve code performance without changing its behavior'),
     ('In clean code, what is the primary goal of the "Single Responsibility Principle"?', 'A function or class should have only one reason to change', 'A function or class should perform as many tasks as possible', 'A function or class should have multiple entry points', 'A function or class should always be extended'),
     ('What is the clean code principle "Law of Demeter" (LoD) also known as?', 'The principle of least knowledge', 'The principle of most knowledge', 'The principle of absolute control', 'The principle of direct connections'),
     ('According to clean code principles, what does the "Boy Scout Rule" recommend when modifying code?', 'Leave the code cleaner than you found it', 'Avoid modifying code at all costs', 'Leave the code exactly as you found it', 'Modify code only if you wrote it'),
@@ -98,13 +68,9 @@ VALUES
     ('What is the primary goal of using intention-revealing names in clean code?', 'To make the code self-explanatory', 'To save characters in variable names', 'To confuse other developers', 'To follow industry trends'),
     ('Which of the following is an example of an intention-revealing variable name for storing a customer''s age?', 'customerAge', 'a', 'x', 'age1234'),
     ('In clean code, why should you avoid using misleading names for variables and functions?', 'To improve code readability and maintainability', 'To confuse other developers', 'To save memory space', 'To make the code more challenging to read'),
-    ('Which of the following variable names contains disinformation about the variable''s purpose?', 'tempVar', 'employeeCount', 'userList', 'maxValue'),
     ('When creating variable names in clean code, what should you ensure when making meaningful distinctions?', 'Ensure that the names reflect their purpose and are distinct from each other', 'Use random characters', 'Make the names as long as possible', 'Use names that are similar to each other'),
-    ('Why is making meaningful distinctions between variable names important in clean code?', 'To avoid ambiguity and make code more understandable', 'To confuse developers', 'To save memory space', 'To prevent variable declarations'),
     ('What is the advantage of using pronounceable names for variables and functions in clean code?', 'It aids in code communication and understanding', 'It makes the code harder to understand', 'It saves characters', 'It increases compile time'),
     ('Which of the following is an example of a pronounceable variable name?', 'customerNumber', 'cstmrNmbr', 'xyz', 'pqr678'),
-    ('In clean code, why is it recommended to use searchable names for variables?', 'To improve code maintainability by enabling easy searching', 'To make it difficult to find variables', 'To confuse developers', 'To reduce code execution time'),
-    ('Which of the following is a characteristic of a searchable name?', 'It reflects the variable''s purpose and can be easily found in code', 'It contains spaces', 'It is a single character', 'It has no uppercase letters'),
     ('Why is proper indenting important in clean code?', 'To improve code readability and structure', 'To make the code visually appealing', 'To use more memory', 'To increase code execution speed'),
     ('What is the purpose of using blocks (e.g., `{}`) in code indentation?', 'To define code scope and organization', 'To create empty spaces', 'To reduce code length', 'To save memory space'),
     ('In clean code, what is the recommended maximum number of lines for a function?', '20 lines', '50 lines', '100 lines', 'As many lines as possible'),
@@ -118,7 +84,6 @@ VALUES
     ('What is the term for a code smell that indicates a function or method is doing too many things?', 'A "God Function" or "Monolithic Function"', 'A "Small Function" or "Atomic Function"', 'A "Good Function" or "Balanced Function"', 'A "Magic Function" or "Enchanted Function"'),
     ('Which code smell refers to the use of variable or function names that are overly vague and do not describe their purpose?', 'Non-descriptive Names', 'Descriptive Names', 'Variable Clarity', 'Verbose Names'),
     ('What is the code smell related to code that contains unnecessary or redundant parts, often resulting from copy-pasting code?', 'Duplicated Code', 'Optimized Code', 'Refactored Code', 'Lean Code'),
-    ('Which code smell is associated with functions that have excessive parameters and become hard to manage?', 'Long Parameter List', 'Short Parameter List', 'Dynamic Parameter List', 'Flexible Parameter List'),
     ('What is the primary goal of clean code according to Robert C. Martin?', 'To make the software easier to understand and maintain', 'To make the software faster', 'To reduce software development costs', 'To add more features quickly'),
     ('What does the SOLID principle "S" stand for in clean code?', 'Single Responsibility Principle (SRP)', 'Simple Code Principle', 'Smart Code Principle', 'Shared Responsibility Principle'),
     ('What is the purpose of the "Liskov Substitution Principle" (LSP) in clean code?', 'To ensure that derived classes can be substituted for their base classes without affecting program correctness', 'To ensure that inheritance is not used in object-oriented programming', 'To prevent code reusability', 'To make code more complex'),
@@ -177,10 +142,58 @@ VALUES
     ('In web development, what is the primary role of a "web server"?', 'To host and serve web content to clients', 'To design user interfaces', 'To create database tables', 'To write server-side code'),
     ('What is the primary function of a "web browser" in web development?', 'To render and display web content to users', 'To process server-side code', 'To manage databases', 'To write HTML code.'),
     ('What is the primary purpose of an Integrated Development Environment (IDE)?', 'To provide a comprehensive toolset for software development', 'To store data in a database', 'To design user interfaces', 'To create web pages'),
-    ('In software development, what is the role of a version control system (VCS) within an IDE?', 'To track changes in the source code and facilitate collaboration', 'To write code without any history or tracking', 'To manage databases', 'To design server-side logic'),
     ('What does "debugging" refer to in the context of software development tools?', 'Identifying and fixing errors in code', 'Creating complex algorithms', 'Writing documentation', 'Optimizing website performance'),
     ('What is the purpose of a "code editor" in an IDE?', 'To write, edit, and manage source code files', 'To create graphical user interfaces', 'To host websites', 'To process server-side code'),
-    ('What is the "syntax highlighting" feature in code editors?', 'It color-codes elements of code to make it easier to read and understand.', 'It indicates errors in code with bright colors.', 'It allows code to be executed directly in the editor.', 'It provides code suggestions and autocomplete.');
+    ('What is the "syntax highlighting" feature in code editors?', 'It color-codes elements of code to make it easier to read and understand.', 'It indicates errors in code with bright colors.', 'It allows code to be executed directly in the editor.', 'It provides code suggestions and autocomplete.'),
+    ('Why is it important to maintain good posture when working at a computer?', 'Good posture helps prevent strain and discomfort and reduces the risk of long-term health issues.', 'Good posture has no impact on health or comfort.', 'Good posture is only important for physical appearance.', 'Good posture is necessary to increase typing speed.'),
+    ('What is the ideal position for your monitor when working at a computer?', 'At eye level to avoid neck strain', 'Below eye level to improve concentration', 'Far to the side to keep the desk clear', 'Directly behind the keyboard'),
+    ('How should you position your keyboard and mouse to promote good posture?', 'Close to the body and at elbow height', 'Far away from the body and below elbow height', 'On the floor for a more comfortable angle', 'At waist level to reduce strain'),
+    ('What can you do to reduce strain on your wrists when typing at a computer?', 'Use an ergonomic keyboard and wrist support', 'Type with your wrists in a flexed position', 'Keep your wrists hovering above the keyboard', 'Type quickly to minimize wrist strain'),
+    ('How often should you take breaks and stretch when working at a computer to maintain good posture?', 'Every 20-30 minutes', 'Every 2-3 hours', 'Only when feeling discomfort', 'Never take breaks.'),
+    ('In what way can meditation support a programmer''s overall well-being?', 'It can promote a sense of calm, reduce anxiety, and improve mental health.', 'It can lead to increased aggression and irritability.', 'It can lead to a decrease in overall happiness.', 'It has no influence on well-being.'),
+    ('Why is project organization important for programmers?', 'It helps maintain clarity, efficiency, and collaboration during development.', 'It makes code harder to read and understand.', 'It is a time-consuming process with no benefits.', 'It is only important for project managers.'),
+    ('What is a common method for organizing code in a project?', 'Using directories or folders to group related files and modules.', 'Placing all code in a single file for simplicity.', 'Leaving code unorganized with no structure.', 'Using unrelated and arbitrary file names.'),
+    ('What does "code modularization" involve in project organization?', 'Breaking code into reusable modules for easier maintenance and development.', 'Creating overly long and monolithic code files.', 'Avoiding functions and modules in coding.', 'Randomly mixing code from different projects.'),
+    ('What is the purpose of a "project README" file?', 'To provide project documentation, instructions, and important information for collaborators and users.', 'To hide information from collaborators and users.', 'To store code for the project.', 'To create user manuals.'),
+    ('What is a popular Java framework for building web applications?', 'Spring', 'Autumn', 'Winter', 'Summer'),
+    ('In JavaScript, which framework is often used for building user interfaces?', 'React', 'Act', 'Proact', 'Interact'),
+    ('What does the "MVC" pattern stand for in the context of web development?', 'Model-View-Controller', 'Model-View-Component', 'Manage-View-Code', 'Model-View-Container'),
+    ('What is the primary purpose of a Java framework like Hibernate?', 'To simplify database interactions and object-relational mapping (ORM)', 'To design user interfaces', 'To create server-side logic', 'To manage front-end code'),
+    ('Which JavaScript framework is known for its flexibility and versatility and is often used for building single-page applications?', 'Angular', 'Rectangle', 'Circle', 'Square'),
+    ('What is the purpose of a software library in programming?', 'To provide pre-written, reusable code for common tasks or functionality.', 'To create new programming languages.', 'To design user interfaces.', 'To write code from scratch for every project.'),
+    ('What does the term "API" stand for in the context of libraries?', 'Application Programming Interface', 'Advanced Programming Instruction', 'Algorithm and Programming Interface', 'Application and Process Integration'),
+    ('In programming, what is a common use case for a "math library"?', 'Performing mathematical operations and calculations.', 'Managing databases.', 'Creating web page layouts.', 'Designing graphical user interfaces.'),
+    ('Why are libraries essential in software development?', 'They save time and effort by providing tested and reliable code solutions.', 'They increase development costs.', 'They make code more complex and difficult to maintain.', 'They hinder collaboration with other developers.'),
+    ('What is an example of a widely used library in web development for working with the Document Object Model (DOM)?', 'jQuery', 'jDocument', 'WebDOM', 'DOMMaster'),
+    ('What does "full-stack programming" refer to?', 'The ability to work on both the front-end and back-end of a web application.', 'Exclusively working on front-end technologies.', 'Exclusively working on back-end technologies.', 'Managing databases without writing code.'),
+    ('Why is full-stack development advantageous for certain projects?', 'It allows a developer to work on both ends of a web application, which can be more efficient and cost-effective.', 'It limits the developer to one specific role, making project management easier.', 'It is the only option for small projects.', 'It is not advantageous for any projects.'),
+    ('What skills are essential for a full-stack developer?', 'Proficiency in both front-end and back-end technologies, as well as understanding databases.', 'Only expertise in front-end technologies.', 'Only expertise in back-end technologies.', 'Design skills without coding knowledge.'),
+    ('What is the first step in learning programming for beginners?', 'Understanding fundamental concepts and selecting a programming language.', 'Creating complex applications from the start.', 'Memorizing code snippets.', 'Learning a single programming language for life.'),
+    ('Why is problem-solving an important skill in programming?', 'Programming involves identifying and solving problems with code.', 'Problem-solving has no relevance in programming.', 'Programmers only follow instructions and don''t solve problems.', 'Problem-solving is mainly important for project managers.'),
+    ('What is the value of practice and hands-on coding exercises in learning programming?', 'Practice helps reinforce concepts and improve coding skills.', 'Practice has no impact on learning programming.', 'Reading programming books is sufficient for mastery.', 'Practice is only important for experienced programmers.'),
+    ('Why is it recommended to start with simple programming projects when learning?', 'Starting with simple projects helps build a foundation and gain confidence.', 'Complex projects are more enjoyable for beginners.', 'Simple projects are too boring for beginners.', 'Complex projects provide faster learning results.'),
+    ('What role does online documentation and community forums play in programming learning?', 'They provide valuable resources for learning, troubleshooting, and finding solutions.', 'Online resources are not useful in programming.', 'Community forums are primarily for socializing.', 'Documentation and forums are only useful for experienced programmers.'),
+    ('What is the main concept behind object-oriented programming (OOP)?', 'Organizing code into objects that encapsulate data and behavior.', 'Using global variables for all data storage.', 'Eliminating the need for functions.', 'Using only procedural programming.'),
+    ('What is an "object" in the context of OOP?', 'An instance of a class that bundles data and methods.', 'A block of code used for calculations.', 'A single line of code in a program.', 'A database table.'),
+    ('Why is not keeping track of code changes a common error for programmers?', 'Not tracking changes can lead to confusion and loss of code versions.', 'Keeping track of changes is unnecessary in programming.', 'Tracking changes is the sole responsibility of project managers.', 'Code changes are not important.'),
+    ('What is a common mistake when handling exceptions in code?', 'Swallowing exceptions without proper handling or logging.', 'Handling exceptions too aggressively.', 'Avoiding the use of exceptions entirely.', 'Not writing code that can throw exceptions.'),
+    ('Why is it important to maintain a healthy work-life balance?', 'To prevent burnout, reduce stress, and improve overall well-being.', 'Work should always be the top priority.', 'Maintaining work-life balance has no impact on health.', 'Balancing work and life is essential only for individuals with high stress jobs.'),
+    ('What are the potential consequences of consistently overworking without a proper balance?', 'Increased stress, burnout, and negative effects on physical and mental health.', 'Overworking leads to enhanced productivity and well-being.', 'Overworking has no consequences.', 'Overworking primarily affects job performance.'),
+    ('How can one achieve a healthy work-life balance?', 'By setting boundaries, prioritizing self-care, and managing time effectively.', 'By focusing solely on work and neglecting personal life.', 'Balancing work and personal life is unattainable.', 'Achieving work-life balance is only possible for a select few.'),
+    ('What is the significance of taking regular breaks and vacations in maintaining a balanced life?', 'Taking breaks and vacations can recharge and rejuvenate individuals, reducing stress.', 'Regular breaks and vacations are not needed.', 'Breaks and vacations are detrimental to productivity.', 'Only individuals with high-stress jobs need breaks and vacations.'),
+    ('How can technology and remote work affect work-life balance?', 'While technology enables flexibility, it can also blur the lines between work and personal life.', 'Technology has no impact on work-life balance.', 'Remote work is detrimental to work-life balance.', 'Technology and remote work only affect personal life, not work.'),
+    ('In the MVC architectural pattern, what is the role of a "controller"?', 'Handling user input, making decisions, and updating the model and view.', 'Displaying data to the user.', 'Managing database connections.', 'Storing data in memory.'),
+    ('What does a "service" typically do in a software application?', 'It encapsulates business logic, performs operations, and interacts with the repository.', 'It handles user interface and displays data.', 'It serves as a database management tool.', 'It is responsible for user authentication only.'),
+    ('What is the primary purpose of a "repository" in programming?', 'It acts as an interface for data access and storage, often linked to a database.', 'It handles user input and updates the view.', 'It is responsible for routing requests in the application.', 'It displays the results to the user interface.'),
+    ('What is the primary purpose of a Data Transfer Object (DTO) in software development?', 'DTOs are used to transfer data between different layers or components of an application, often to minimize network calls or simplify data transmission.', 'DTOs are used for complex data calculations.', 'DTOs are responsible for database management.', 'DTOs are used exclusively for user authentication.'),
+    ('Why are Data Transfer Objects (DTOs) valuable in web services and APIs?', 'DTOs help reduce the amount of data sent over the network, improving performance and reducing data transfer costs.', 'DTOs have no role in web services and APIs.', 'DTOs primarily increase data transfer costs.', 'DTOs are only used in offline data processing.'),
+    ('In version control systems, what does "GIT" signify?', 'Distributed Version Control System', 'Global Information Tracker', 'Graphical Interface Toolkit', 'General Integrated Technology');
+
+
+
+
+
+
 
 
 
