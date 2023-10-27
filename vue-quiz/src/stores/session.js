@@ -5,24 +5,24 @@ export const session = reactive({
     name: window.sessionStorage.getItem('name') || null, // Retrieve user's name from sessionStorage
     highscore: window.sessionStorage.getItem('highscore') || 0, // Retrieve highscore from sessionStorage
     highscore_date: null, // Add the highscore_date field
-    score: 0,
+    score: parseInt(window.sessionStorage.getItem('score')) || 0,
     userId: window.sessionStorage.getItem('userId'),
 
 });
 
-export function setSession(sessionToken, name, highscore, userId) {
+export function setSession(sessionToken, name, highscore, userId, score) {
     session.sessionToken = sessionToken;
     session.name = name;
     session.highscore = highscore;
     session.userId = userId;
+    session.score = score;
+    console.log("Before setting 'score':", session.score);
     window.sessionStorage.setItem('session', sessionToken);
     window.sessionStorage.setItem('name', name);
     window.sessionStorage.setItem('highscore', highscore);
     window.sessionStorage.setItem('userId', userId);
-    console.log("userId set in session.userId:", session.userId);
-    console.log("userId set in window.sessionStorage:", window.sessionStorage.getItem('userId'));
-    console.log("highscore set in window.sessionStorage:", window.sessionStorage.getItem('highscore'));
-    console.log("name set in window.sessionStorage:", window.sessionStorage.getItem('name'));
+    window.sessionStorage.setItem('score', score);
+    console.log("After setting 'score':", session.score);
 
 }
 
@@ -47,10 +47,12 @@ export async function clearSession() {
             session.name = null;
             session.highscore = 0;
             session.userId = null;
+            session.score = 0;
             window.sessionStorage.removeItem('session');
             window.sessionStorage.removeItem('name');
             window.sessionStorage.removeItem('highscore');
-            window.sessionStorage.setItem('userId');
+            window.sessionStorage.removeItem('userId');
+            window.sessionStorage.removeItem('score');
         }
     } catch (error) {
         console.error('An error occurred:', error);
@@ -105,5 +107,3 @@ function sendHighScoreToDatabase(highscore, highscore_date, userId ) {
         console.log("High score updated successfully.");
     });
 }
-
-

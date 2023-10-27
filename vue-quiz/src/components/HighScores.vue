@@ -1,18 +1,26 @@
 <template>
-  <div>
-    <h2 class="text-2xl font-bold mb-4">Top 10 Players</h2>
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-        <thead class="bg-gray-100 text-gray-800">
+  <div class="flex flex-col items-center">
+    <div class="overflow-x-auto w-full max-w-5xl bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
+      <table class="w-full max-w-5xl">
+        <thead class="text-gray-800">
         <tr>
-          <th class="px-4 py-2 text-left">Name</th>
-          <th class="px-4 py-2 text-left">High Score</th>
+          <th class="px-5 py-5 text-2xl font-bold mb-4 text-left">Top 10 Players</th>
+          <th class="px-5 text-2xl font-bold mb-4 text-left"></th>
+        </tr>
+        <tr>
+          <th class="px-5 py-2 text-left">Name</th>
+          <th class="px-5 py-2 text-left">High Score</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="score in highScores" :key="score.id" class="bg-white">
-          <td class="px-4 py-2 border border-gray-200">{{ score.name }}</td>
-          <td class="px-4 py-2 border border-gray-200">{{ score.highscore }}</td>
+        <tr
+            v-for="(score, index) in highScores"
+            :key="score.id"
+            class="bg-white bg-opacity-70"
+            :class="{ 'highlighted-row': score.name === session.name }"
+        >
+          <td class="px-5 py-2 border border-gray-200">{{ score.name }}</td>
+          <td class="px-5 py-2 border border-gray-200">{{ score.highscore }}</td>
         </tr>
         </tbody>
       </table>
@@ -20,8 +28,10 @@
   </div>
 </template>
 
+
 <script setup>
 import { ref, onMounted } from 'vue';
+import {session} from "@/stores/session";
 
 const highScores = ref([]);
 
@@ -35,3 +45,11 @@ onMounted(async () => {
   }
 });
 </script>
+
+
+<style scoped>
+.highlighted-row {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+</style>

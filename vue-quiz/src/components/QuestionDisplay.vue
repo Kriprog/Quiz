@@ -86,7 +86,7 @@ onMounted(() => {
     <div v-if="questionDto"
          class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg"
     >
-      <p class="text-gray-800 text-2xl">{{ questionDto.questionText }}</p>
+      <p class="text-gray-800 font-bold text-2xl">{{ questionDto.questionText }}</p>
       <div class="mt-4">
         <div class="grid grid-cols-2 gap-4">
           <button
@@ -99,15 +99,11 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      <p v-if="answerSubmitted" class="mt-4">
+      <p v-if="answerSubmitted" class="text-lg pt-5">
         Your answer is: {{ selectedAnswer }}
-        <span v-if="isCorrectAnswer" class="text-green-600 font-semibold"> (Correct)</span>
-        <span v-else class="text-red-600 font-semibold"> (Incorrect)</span>
+        <span v-if="isCorrectAnswer" class="text-gray-800 font-bold"> (Correct)</span>
+        <span v-else class="text-gray-800 font-bold"> (Incorrect)</span>
       </p>
-      <div class="mt-4">
-        <p class="text-lg font-semibold">Score: {{ score }}</p>
-        <p class="text-lg font-semibold">High Score: {{ highscore }}</p>
-      </div>
     </div>
   </div>
 </template>
