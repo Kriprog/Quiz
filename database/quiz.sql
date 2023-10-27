@@ -31,13 +31,17 @@ create table Sessions
 );
 
 insert into User_account (name, password, email, highscore)
-values ('TestKasutaja', 'Salajane', 'test@mail.ee', 0);
+values ('FestKasutaja11', 'FestKasutaja11', 'Fest11@mail.ee', 3);
+
 
 ALTER USER postgres WITH PASSWORD 'postgres';
 
-DELETE FROM question;
+DELETE FROM user_account;
 
-select * from question;
+select * from user_account;
+
+ALTER TABLE user_account    ADD COLUMN highscore_date TIMESTAMP;
+
 
 INSERT INTO question (question_text, correct_answer, option1, option2, option3)
 VALUES

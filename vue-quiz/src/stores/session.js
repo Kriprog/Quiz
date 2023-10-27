@@ -4,6 +4,7 @@ export const session = reactive({
     sessionToken: window.sessionStorage.getItem('session'), // Retrieve session token from sessionStorage
     name: window.sessionStorage.getItem('name') || null, // Retrieve user's name from sessionStorage
     highscore: window.sessionStorage.getItem('highscore') || 0, // Retrieve highscore from sessionStorage
+    highscore_date: null, // Add the highscore_date field
     score: parseInt(window.sessionStorage.getItem('score')) || 0,
     userId: window.sessionStorage.getItem('userId'),
 
@@ -62,10 +63,12 @@ export function increaseHighScore(points) {
     if (session.score > session.highscore) {
         // Update the high score locally
         session.highscore = session.score;
+        session.highscore_date = new Date(); // Capture the current date and time
         window.sessionStorage.setItem('highscore', session.highscore);
+        window.sessionStorage.setItem('highscore_date', session.highscore_date); // Store it in sessionStorage
 
         // Send the new high score to the database (replace with your API endpoint)
-        sendHighScoreToDatabase(session.highscore, session.userId)
+        sendHighScoreToDatabase(session.highscore, session.highscore_date, session.userId)
             .then(() => {
                 console.log('High score updated in the database.');
             })
@@ -83,7 +86,7 @@ export function resetScore() {
     session.score = 0;
 }
 
-function sendHighScoreToDatabase(highscore, userId ) {
+function sendHighScoreToDatabase(highscore, highscore_date, userId ) {
     console.log("Updating high score for user with ID: " + userId);
     // Implement the logic to send the high score to the database
     // Use a PATCH request to update the high score for the specified user
@@ -94,7 +97,7 @@ function sendHighScoreToDatabase(highscore, userId ) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ highscore }),
+        body: JSON.stringify({ highscore, highscore_date }),
 
     }).then((response) => {
         if (!response.ok) {
