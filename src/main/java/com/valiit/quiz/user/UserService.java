@@ -3,6 +3,7 @@ package com.valiit.quiz.user;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,8 @@ public class UserService {
         if (user != null) {
             System.out.println("User found. Current high score: " + user.getHighscore());
             user.setHighscore(newHighScore);
+            // Capture the current date and time
+            user.setHighscore_date(new Date()); // Set highscore_date to the current date and time
             System.out.println("Updating high score to: " + newHighScore);
             userRepository.save(user); // Use the save method to update the user
             System.out.println("High score updated successfully.");
