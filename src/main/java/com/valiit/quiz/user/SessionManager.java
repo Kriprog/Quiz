@@ -10,16 +10,18 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 
 public class SessionManager {
     // Define the length of your session token (e.g., 32 characters)
     private static final int TOKEN_LENGTH = 32;
-    public static Timestamp expirationTimestamp = calculateExpirationTimestamp(60);
+    public static Timestamp expirationTimestamp = calculateExpirationTimestamp(1);
 
 
     // Generate a random session token
     public static String generateSessionToken() {
+        //UUID.randomUUID()
         SecureRandom secureRandom = new SecureRandom();
         byte[] tokenBytes = new byte[TOKEN_LENGTH];
         secureRandom.nextBytes(tokenBytes);
@@ -74,7 +76,7 @@ public class SessionManager {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw new IllegalStateException(e);
         }
     }
 

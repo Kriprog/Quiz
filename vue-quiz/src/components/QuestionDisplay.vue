@@ -82,8 +82,10 @@ onMounted(() => {
 <style scoped>
 </style>
 <template>
-  <div class=" flex flex-col items-center justify-center" >
-    <div v-if="questionDto" class="max-w-md p-4 bg-white bg-opacity-80 rounded-lg shadow-lg">
+  <div class="flex flex-col items-center justify-center">
+    <div v-if="questionDto"
+         class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg"
+    >
       <p class="text-gray-800 text-2xl">{{ questionDto.questionText }}</p>
       <div class="mt-4">
         <div class="grid grid-cols-2 gap-4">
@@ -91,7 +93,7 @@ onMounted(() => {
               v-for="option in questionDto.options"
               :key="option"
               @click="submitAnswer(option)"
-              class="text-white font-medium py-2 px-4 rounded bg-violet-500 hover:bg-violet-600 focus:outline-none"
+              class="responsive-square-button text-white text-1xl font-medium py-2 px-4 rounded bg-violet-500 hover:bg-violet-600 focus:outline-none"
           >
             {{ option }}
           </button>
@@ -111,4 +113,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.responsive-square-button {
+  width: 100%; /* Use 100% for responsive width */
+  padding-top: 15%; /* Set padding-top to create a square */
+  padding-bottom: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

@@ -24,7 +24,7 @@ public class UserService {
         return userRepository.findTop10HighScores();
     }
     public UserAccount findUserById(Integer id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
     public Integer getHighScore(Integer userId) {
