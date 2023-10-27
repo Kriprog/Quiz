@@ -14,7 +14,7 @@ export function setSession(sessionToken, name, highscore, userId, score) {
     session.name = name;
     session.highscore = highscore;
     session.userId = userId;
-    session.score = score;
+    session.score = parseInt(score) || 0;
     console.log("Before setting 'score':", session.score);
     window.sessionStorage.setItem('session', sessionToken);
     window.sessionStorage.setItem('name', name);
