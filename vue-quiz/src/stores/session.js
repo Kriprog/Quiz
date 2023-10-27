@@ -3,21 +3,24 @@ import { reactive } from 'vue';
 export const session = reactive({
     sessionToken: window.sessionStorage.getItem('session'), // Retrieve session token from sessionStorage
     name: window.sessionStorage.getItem('name') || null, // Retrieve user's name from sessionStorage
-    highscore: window.sessionStorage.getItem('highscore') || 0, // Retrieve highscore from sessionStorage
-    score: 0,
+    highscore: window.sessionStorage.getItem('highscore') || '0', // Retrieve highscore from sessionStorage
+    score: window.sessionStorage.getItem('score') || '0',
     userId: window.sessionStorage.getItem('userId'),
 
 });
 
-export function setSession(sessionToken, name, highscore, userId) {
+export function setSession(sessionToken, name, highscore, userId, score) {
     session.sessionToken = sessionToken;
     session.name = name;
     session.highscore = highscore;
     session.userId = userId;
+    session.score = score;
     window.sessionStorage.setItem('session', sessionToken);
     window.sessionStorage.setItem('name', name);
     window.sessionStorage.setItem('highscore', highscore);
     window.sessionStorage.setItem('userId', userId);
+    window.sessionStorage.setItem('score', score);
+
     console.log("userId set in session.userId:", session.userId);
     console.log("userId set in window.sessionStorage:", window.sessionStorage.getItem('userId'));
     console.log("highscore set in window.sessionStorage:", window.sessionStorage.getItem('highscore'));
@@ -46,10 +49,12 @@ export async function clearSession() {
             session.name = null;
             session.highscore = 0;
             session.userId = null;
+            session.score = 0;
             window.sessionStorage.removeItem('session');
             window.sessionStorage.removeItem('name');
             window.sessionStorage.removeItem('highscore');
-            window.sessionStorage.setItem('userId');
+            window.sessionStorage.removeItem('userId');
+            window.sessionStorage.removeItem('score');
         }
     } catch (error) {
         console.error('An error occurred:', error);

@@ -38,7 +38,6 @@
 
 <script setup>
 import {clearSession, session} from '@/stores/session'
-
 import { Disclosure } from '@headlessui/vue'
 import { CodeBracketIcon, CreditCardIcon, PowerIcon } from '@heroicons/vue/24/outline'
 import {useRouter} from "vue-router";
@@ -46,12 +45,13 @@ import {useRouter} from "vue-router";
 const user = {
   name: session.name,
   email: session.email,
-  highscore: session.highscore
+  highscore: session.highscore,
+  score: session.score
   }
 const navigation = [
   { name: 'Hello, ' + user.name + '!', button: false },
   { name: 'Start quiz', href: '/quiz', button: true },
-  { name: 'Current score: 1', button: false },
+  { name: 'Current score:' + user.score, button: false },
   { name: 'Current highscore: ' + user.highscore, button: false },
   { name: 'Top 10 players', href: '/highscoreview', button: true },
 ]
