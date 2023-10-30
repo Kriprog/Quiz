@@ -6,6 +6,8 @@ import QuizView from '../views/QuizView.vue';
 import HighScores from "../components/HighScores.vue";
 import HighScoreView from "../views/HighScoreView.vue";
 import { session } from '@/stores/session';
+import TimerComponent from "@/components/TimerComponent.vue";
+
 
 
 const requireAuth = (to, from, next) => {
@@ -54,6 +56,11 @@ const router = createRouter({
       name: 'HighScoreView',
       component: HighScoreView,
       beforeEnter: requireAuth,
+    },
+    {
+      path: '/timer', // Use the desired URL path here
+      name: 'Timer',
+      component: TimerComponent,
     },
   ]
 });
