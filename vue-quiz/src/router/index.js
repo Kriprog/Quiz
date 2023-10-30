@@ -8,6 +8,7 @@ import HighScoreView from "../views/HighScoreView.vue";
 import { session } from '@/stores/session';
 
 
+
 const requireAuth = (to, from, next) => {
   if (session.sessionToken) {
     // User is authenticated, allow access to the route

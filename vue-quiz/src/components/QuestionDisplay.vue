@@ -1,15 +1,21 @@
 <script setup>
-import {ref} from 'vue';
-import { toRef } from 'vue';
-import { session, updateScore, increaseHighScore, resetScore } from '@/stores/session'; // Adjust the path to match the actual location of your session.js file
+import {ref, defineEmits } from 'vue';
+import {updateScore, increaseHighScore, resetScore, session} from '@/stores/session';
+import GameMenu from './GameMenu.vue';
 const questionDto = ref(null);
 const selectedAnswer = ref(null);
 const answerSubmitted = ref(false);
 const isCorrectAnswer = ref(false);
+const showCorrectMessage = ref(false);
+const showQuestionDisplay = ref(true);
+const showGameMenu = ref(false);
+const shouldUpdateQuestion = ref(true);
+const emits = defineEmits();
+
 
 const fetchRandomQuestion = async () => {
   try {
-    const response = await fetch('/api/quiz'); // Replace with your API endpoint
+    const response = await fetch('/api/quiz');
     if (!response.ok) {
       throw Error('Network response was not ok');
     }
@@ -54,35 +60,46 @@ const submitAnswer = (selectedOption) => {
   checkAnswer(selectedOption)
       .then((isCorrect) => {
         if (isCorrect) {
-          updateScore(1); // Update the score using the session function
-          increaseHighScore(1); // Update the highscore using the session function
+          updateScore(1);
+          increaseHighScore(1);
+          showCorrectMessage.value = true; // Show the "You answered correctly" message
+          shouldUpdateQuestion.value = false; // Prevent question update
+          console.log('Answer is correct.');
+          setTimeout(() => {
+            showCorrectMessage.value = false; // Hide the message after 1 second
+            shouldUpdateQuestion.value = true; // Allow question update
+            console.log('Question will update.');
+            fetchRandomQuestion();
+          }, 1000); // This timer is set to 3 seconds (3000 milliseconds)
         } else {
-          resetScore(); // Reset the score using the session function
+          emits('incorrect-answer-clicked');
+          showQuestionDisplay.value = false;
+          resetScore();
+          console.log('Answer is incorrect.');
+          console.log('showQuestionDisplay:', showQuestionDisplay.value);
+          console.log('GameMenu displayed:', showGameMenu.value);
+          console.log('QuestionDisplay hidden:', showQuestionDisplay.value);
         }
-        fetchRandomQuestion(); // Fetch the next question
       })
       .catch((error) => {
         console.error('Error:', error);
       });
 };
 
+
 import { onMounted } from 'vue';
 
 onMounted(() => {
-  // Automatically call fetchRandomQuestion when the page is loaded
   fetchRandomQuestion();
 });
 
+
 </script>
-
-
 <style scoped>
 </style>
 <template>
   <div class="flex flex-col items-center justify-center">
-    <div v-if="questionDto"
-         class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg"
-    >
+    <div v-if="showQuestionDisplay && questionDto" class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
       <p class="text-gray-800 font-bold text-2xl">{{ questionDto.questionText }}</p>
       <div class="mt-4">
         <div class="grid grid-cols-2 gap-4">
@@ -96,12 +113,13 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      <p v-if="answerSubmitted" class="text-lg pt-5">
-        Your answer is: {{ selectedAnswer }}
-        <span v-if="isCorrectAnswer" class="text-gray-800 font-bold"> (Correct)</span>
-        <span v-else class="text-gray-800 font-bold"> (Incorrect)</span>
-      </p>
+      <!-- Add a message display area for "You answered correctly" -->
+      <p v-if="showCorrectMessage" class="text-lg pt-5 text-green-500 font-bold">You answered correctly!</p>
     </div>
+    <template v-else>
+      <!-- Menu component with the retryGame event handler -->
+      <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)" />
+    </template>
   </div>
 </template>
 

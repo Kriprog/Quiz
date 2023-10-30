@@ -15,18 +15,6 @@ public class QuestionService {
         this.questionRepository = questionRepository;
     }
 
-
-    /*  public QuestionDto getRandomQuestion() {
-          QuestionDto randomQuestion = questionRepository.findRandomQuestion();
-          QuestionDto responseDto = new QuestionDto();
-
-          // Set values for the QuestionResponseDto
-          responseDto.setQuestionText(randomQuestion.getQuestionText());
-          responseDto.setOptions(new HashSet<>(randomQuestion.getOptions()));
-
-
-          return responseDto;
-      }*/
     private static class Shuffle {
         public static void shuffle(List<String> options) {
             int n = options.size();
@@ -47,7 +35,6 @@ public class QuestionService {
         QuestionDto questionDto = new QuestionDto();
         questionDto.setId(randomQuestion.getId());
         questionDto.setQuestionText(randomQuestion.getQuestionText());
-
         List<String> options = new ArrayList<>();
         options.add(randomQuestion.getOption1());
         options.add(randomQuestion.getOption2());
@@ -62,15 +49,10 @@ public class QuestionService {
     }
 
     public boolean checkAnswer(Integer id, String selectedAnswer) {
-        // Retrieve the correct answer for the given questionId from the database
         String correctAnswer = questionRepository.findCorrectAnswerById(id);
-
-        if (correctAnswer != null) {
-            // Compare the selected answer with the correct answer
-            return selectedAnswer != null && selectedAnswer.trim().equalsIgnoreCase(correctAnswer.trim());
-        } else {
-            // Handle the case where correctAnswer is null (e.g., return false)
+        if (correctAnswer == null) {
             return false;
         }
-}
+        return selectedAnswer != null && selectedAnswer.trim().equalsIgnoreCase(correctAnswer.trim());
+    }
 }
