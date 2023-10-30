@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class QuestionController {
-
     private final QuestionService questionService;
 
     @Autowired
@@ -27,11 +26,7 @@ public class QuestionController {
     public ResponseEntity<AnswerResponseDto> checkAnswer(@RequestBody AnswerCheckDto answerRequest) {
         Integer id = answerRequest.getId();
         String selectedAnswer = answerRequest.getSelectedAnswer();
-
-
         boolean isCorrect = questionService.checkAnswer(id, selectedAnswer);
-
-
         return ResponseEntity.ok(new AnswerResponseDto(isCorrect));
     }
 

@@ -76,10 +76,5 @@ const navigation = computed(() => {
   ]
 })
 
-watch(() => session.score, () => {
-  navigation.value = [
-      ...navigation.value,
-    { name: 'Current score: ' + session.score, button: false }
-  ]
-})
+
 </script>

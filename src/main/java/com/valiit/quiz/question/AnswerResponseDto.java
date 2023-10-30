@@ -9,6 +9,7 @@ import lombok.Setter;
 @Data
 public class AnswerResponseDto {
     private boolean isCorrect;
+
     public AnswerResponseDto(boolean isCorrect) {
         this.isCorrect = isCorrect;
     }
