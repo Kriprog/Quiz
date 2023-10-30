@@ -73,26 +73,19 @@ const submitAnswer = (selectedOption) => {
           }, 1000); // This timer is set to 3 seconds (3000 milliseconds)
         } else {
           emits('incorrect-answer-clicked');
+          showQuestionDisplay.value = false;
           resetScore();
           console.log('Answer is incorrect.');
-
-
-          console.log('GameMenu displayed:', showGameMenu);
-          console.log('QuestionDisplay hidden:', showQuestionDisplay);
+          console.log('showQuestionDisplay:', showQuestionDisplay.value);
+          console.log('GameMenu displayed:', showGameMenu.value);
+          console.log('QuestionDisplay hidden:', showQuestionDisplay.value);
         }
       })
       .catch((error) => {
         console.error('Error:', error);
       });
 };
-const retryGame = () => {
-  // Reset the game state to restart the game
-  resetScore();
-  showCorrectMessage.value = false;
-  shouldUpdateQuestion.value = true;
-  fetchRandomQuestion();
-  showMenu.value = false;
-};
+
 
 import { onMounted } from 'vue';
 
@@ -100,9 +93,8 @@ onMounted(() => {
   fetchRandomQuestion();
 });
 
+
 </script>
-
-
 <style scoped>
 </style>
 <template>
@@ -121,17 +113,12 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      <p v-if="answerSubmitted" class="text-lg pt-5">
-        Your answer is: {{ selectedAnswer }}
-        <span v-if="isCorrectAnswer" class="text-gray-800 font-bold"> (Correct)</span>
-        <span v-else class="text-gray-800 font-bold"> (Incorrect)</span>
-      </p>
       <!-- Add a message display area for "You answered correctly" -->
       <p v-if="showCorrectMessage" class="text-lg pt-5 text-green-500 font-bold">You answered correctly!</p>
     </div>
     <template v-else>
       <!-- Menu component with the retryGame event handler -->
-      <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)" @retryGame="retryGame" />
+      <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)" />
     </template>
   </div>
 </template>

@@ -85,7 +85,7 @@ export function resetScore() {
 }
 
 function sendHighScoreToDatabase(highscore, highscore_date, userId ) {
-    const endpoint = `/api/users/highscore/${userId}`; // Replace with your actual API endpoint
+    const endpoint = `/api/users/highscore/${userId}`;
 
     return fetch(endpoint, {
         method: 'PATCH',

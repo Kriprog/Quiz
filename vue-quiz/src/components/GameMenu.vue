@@ -1,14 +1,14 @@
 <template>
   <div class="menu-container">
-    <h2>Game Menu</h2>
+    <h2>Game over!</h2>
     <p>Latest Score: {{ session.score }}</p>
     <p>High Score: {{ session.highscore }}</p>
-    <button @click="retryGame">Retry</button>
+    <button @click="restartGame">Try again!</button>
   </div>
 </template>
 
 <script>
-import {session} from "../stores/session";
+import {session} from "@/stores/session";
 
 export default {
   computed: {
@@ -22,10 +22,10 @@ export default {
     highScore: Number,
   },
   methods: {
-    retryGame() {
-      this.$emit("retryGame"); // Emit an event to retry the game
-    },
-  },
+    restartGame() {
+      window.location.reload();
+    }
+  }
 };
 </script>
 
