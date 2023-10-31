@@ -15,14 +15,16 @@ const isWaiting = ref(false);
 let finalScore = session.score;
 let highestSessionScore = finalScore;
 
+function throwCustomError() {
+  throw new Error("Network response error");
+}
 const fetchRandomQuestion = async () => {
   try {
     const response = await fetch('/api/quiz');
     if (!response.ok) {
-      throw Error('Network response was not ok');
+      throwCustomError();
     }
-    const data = await response.json();
-    questionDto.value = data;
+    questionDto.value = await response.json();
   } catch (error) {
     console.error(error);
   }
@@ -40,15 +42,14 @@ const checkAnswer = async () => {
         selectedAnswer: selectedAnswer.value,
       }),
     });
-
     if (!response.ok) {
-      throw Error('Network response was not ok');
+      throwCustomError();
     }
 
     const result = await response.json();
-
     answerSubmitted.value = true;
     isCorrectAnswer.value = result.correct;
+    console.log("Is answer correct?: " + result.correct);
     return result.correct;
 
   } catch (error) {
@@ -74,12 +75,10 @@ const submitAnswer = (selectedOption) => {
           }
           showCorrectMessage.value = true;
           shouldUpdateQuestion.value = false;
-          console.log('Answer is correct.');
           setTimeout(() => {
             showCorrectMessage.value = false;
             shouldUpdateQuestion.value = true;
             isWaiting.value = false;
-            console.log('Question will update.');
             fetchRandomQuestion();
           }, 1000);
         } else {
@@ -96,7 +95,6 @@ const submitAnswer = (selectedOption) => {
 
 
 import {onMounted} from 'vue';
-import {TrophyIcon} from "@heroicons/vue/24/outline";
 
 onMounted(() => {
   fetchRandomQuestion();
