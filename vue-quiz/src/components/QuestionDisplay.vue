@@ -49,7 +49,6 @@ const checkAnswer = async () => {
     const result = await response.json();
     answerSubmitted.value = true;
     isCorrectAnswer.value = result.correct;
-    console.log("Is answer correct?: " + result.correct);
     return result.correct;
 
   } catch (error) {
