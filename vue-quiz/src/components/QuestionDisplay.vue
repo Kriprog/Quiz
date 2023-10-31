@@ -2,7 +2,9 @@
 import {ref, defineEmits} from 'vue';
 import {updateScore, increaseHighScore, resetScore, session} from '@/stores/session';
 import GameMenu from './GameMenu.vue';
-
+import TimerComponent from './TimerComponent.vue'; // Import the Timer component
+const timerComponentRef = ref(null); // Create a ref for the TimerComponent
+const timeLeft = 30;
 const questionDto = ref(null);
 const selectedAnswer = ref(null);
 const answerSubmitted = ref(false);
@@ -18,6 +20,22 @@ let highestSessionScore = finalScore;
 function throwCustomError() {
   throw new Error("Network response error");
 }
+
+
+const handleTimerExpired = () => {
+  // Handle timer expiration here, e.g., show a message or take appropriate action
+  handleWrongAnswer(); // Call the method for handling a wrong answer
+};
+
+const handleWrongAnswer = () => {
+  emits('incorrect-answer-clicked');
+  showQuestionDisplay.value = false;
+  resetScore();
+  isWaiting.value = false;
+
+};
+
+
 const fetchRandomQuestion = async () => {
   try {
     const response = await fetch('/api/quiz');
@@ -25,6 +43,10 @@ const fetchRandomQuestion = async () => {
       throwCustomError();
     }
     questionDto.value = await response.json();
+
+    timerComponentRef.value.resetTimer();
+    timerComponentRef.value.startTimer();
+
   } catch (error) {
     console.error(error);
   }
@@ -74,6 +96,8 @@ const submitAnswer = (selectedOption) => {
           }
           showCorrectMessage.value = true;
           shouldUpdateQuestion.value = false;
+
+          timerComponentRef.value.stopTimer();
           setTimeout(() => {
             showCorrectMessage.value = false;
             shouldUpdateQuestion.value = true;
@@ -81,10 +105,7 @@ const submitAnswer = (selectedOption) => {
             fetchRandomQuestion();
           }, 1000);
         } else {
-          emits('incorrect-answer-clicked');
-          showQuestionDisplay.value = false;
-          resetScore();
-          isWaiting.value = false;
+          handleWrongAnswer();
         }
       })
       .catch((error) => {
@@ -105,6 +126,7 @@ onMounted(() => {
 </style>
 <template>
   <div class="flex flex-col items-center justify-center">
+    <TimerComponent :timeLeft="timeLeft" @timerExpired="handleTimerExpired" ref="timerComponentRef" />
     <div v-if="showQuestionDisplay && questionDto"
          class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
       <p class="text-gray-800 font-bold text-2xl"> {{ questionDto.questionText }} </p>
