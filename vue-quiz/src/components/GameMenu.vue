@@ -1,7 +1,7 @@
 <template>
-  <div class="menu-container">
-    <h2>Game over!</h2>
-    <p>Latest Score: {{ session.score }}</p>
+  <div class="menu-container w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
+    <p class="text-gray-800 font-bold text-2xl">Game over!</p>
+    <p>Final Score: {{ highestSessionScore }}</p>
     <p>High Score: {{ session.highscore }}</p>
     <button @click="restartGame">Try again!</button>
   </div>
@@ -17,6 +17,7 @@ export default {
     }
   },
   props: {
+    highestSessionScore: Number,
     showMenu: Boolean,
     latestScore: Number,
     highScore: Number,
@@ -32,13 +33,11 @@ export default {
 <style scoped>
 .menu-container {
   text-align: center;
-  background-color: #f0f0f0;
-  padding: 20px;
+  padding: 100px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
-
 button {
   padding: 10px 20px;
   background-color: #007bff;

@@ -11,6 +11,9 @@ const showQuestionDisplay = ref(true);
 const showGameMenu = ref(false);
 const shouldUpdateQuestion = ref(true);
 const emits = defineEmits();
+let finalScore = session.score;
+let highestSessionScore = finalScore;
+console.log("Captured finalScore:", finalScore);
 
 
 const fetchRandomQuestion = async () => {
@@ -62,6 +65,10 @@ const submitAnswer = (selectedOption) => {
         if (isCorrect) {
           updateScore(1);
           increaseHighScore(1);
+
+          if (session.score > highestSessionScore) {
+            highestSessionScore = session.score; // Update the highestSessionScore
+          }
           showCorrectMessage.value = true; // Show the "You answered correctly" message
           shouldUpdateQuestion.value = false; // Prevent question update
           console.log('Answer is correct.');
@@ -75,10 +82,6 @@ const submitAnswer = (selectedOption) => {
           emits('incorrect-answer-clicked');
           showQuestionDisplay.value = false;
           resetScore();
-          console.log('Answer is incorrect.');
-          console.log('showQuestionDisplay:', showQuestionDisplay.value);
-          console.log('GameMenu displayed:', showGameMenu.value);
-          console.log('QuestionDisplay hidden:', showQuestionDisplay.value);
         }
       })
       .catch((error) => {
@@ -88,6 +91,7 @@ const submitAnswer = (selectedOption) => {
 
 
 import { onMounted } from 'vue';
+import {TrophyIcon} from "@heroicons/vue/24/outline";
 
 onMounted(() => {
   fetchRandomQuestion();
@@ -100,7 +104,7 @@ onMounted(() => {
 <template>
   <div class="flex flex-col items-center justify-center">
     <div v-if="showQuestionDisplay && questionDto" class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
-      <p class="text-gray-800 font-bold text-2xl">{{ questionDto.questionText }}</p>
+      <p class="text-gray-800 font-bold text-2xl"> {{ questionDto.questionText }} </p>
       <div class="mt-4">
         <div class="grid grid-cols-2 gap-4">
           <button
@@ -112,13 +116,18 @@ onMounted(() => {
             {{ option }}
           </button>
         </div>
+
+        <div class="relative flex items-center bg-gray-100 text-gray-700 hover:text-gray-950 hover:bg-gray-50 transition duration-200"
+             style="padding: 15px; width: fit-content; border-radius: 10px; margin-top: 10px;">
+          <span class="font-semibold">Your current score: {{ session.score }} </span>
+        </div>
+
       </div>
       <!-- Add a message display area for "You answered correctly" -->
       <p v-if="showCorrectMessage" class="text-lg pt-5 text-green-500 font-bold">You answered correctly!</p>
     </div>
     <template v-else>
-      <!-- Menu component with the retryGame event handler -->
-      <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)" />
+      <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)" :highestSessionScore="parseInt(highestSessionScore)" />
     </template>
   </div>
 </template>
