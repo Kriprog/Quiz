@@ -42,13 +42,13 @@
 
           <li class="ml-2 items-center flex space-x-2 ">
             <div class="relative flex items-center rounded-full p-3 text-gray-700">
-              <span class="font-semibold">Your highscore: {{user.highscore}}</span>
+              <span class="font-semibold">Your highscore: {{ user.highScore }}</span>
             </div>
           </li>
 
           <li class="ml-2 items-center flex space-x-2 ">
             <div class="relative flex items-center rounded-full p-3 text-gray-700">
-              <span class="font-semibold">Current score: {{user.score}}</span>
+              <span class="font-semibold">Current score: {{session.score}}</span>
             </div>
           </li>
 
@@ -95,14 +95,13 @@
 
 <script setup>
 import { clearSession, session } from '@/stores/session'
-import { Disclosure } from '@headlessui/vue'
 import { PowerIcon, XMarkIcon, Bars3Icon, PlayIcon, TrophyIcon} from '@heroicons/vue/24/outline'
 import { useRouter } from "vue-router"
 
 const user = {
   name: session.name,
   email: session.email,
-  highscore: session.highscore,
+  highScore: session.highscore,
   score: session.score
 }
 
@@ -115,25 +114,6 @@ const logout = () => {
   // Redirect to the login or home page, as per your app's design
   router.push('/'); // Replace '/login' with the path to your login page
 }
-
-import { computed, watch } from 'vue'
-
-const navigation = computed(() => {
-  return [
-    { name: 'Hello, ' + user.name + '!', button: false },
-    { name: 'Start quiz', href: '/quiz', button: true },
-    { name: 'Top 10 players', href: '/highscoreview', button: true },
-    { name: 'Your highscore: ' + session.highscore, button: false },
-    { name: 'Current score: ' + session.score, button: false },
-  ]
-})
-
-watch(() => session.score, () => {
-  navigation.value = [
-      ...navigation.value,
-    { name: 'Current score: ' + session.score, button: false }
-  ]
-})
 
 // Burger menus
 document.addEventListener('DOMContentLoaded', function() {
