@@ -2,6 +2,9 @@
 import {ref, defineEmits } from 'vue';
 import {updateScore, increaseHighScore, resetScore, session} from '@/stores/session';
 import GameMenu from './GameMenu.vue';
+import TimerComponent from './TimerComponent.vue'; // Import the Timer component
+const timerComponentRef = ref(null); // Create a ref for the TimerComponent
+const timeLeft = 30;
 const questionDto = ref(null);
 const selectedAnswer = ref(null);
 const answerSubmitted = ref(false);
@@ -13,6 +16,19 @@ const shouldUpdateQuestion = ref(true);
 const emits = defineEmits();
 
 
+
+const handleTimerExpired = () => {
+  // Handle timer expiration here, e.g., show a message or take appropriate action
+  handleWrongAnswer(); // Call the method for handling a wrong answer
+};
+
+const handleWrongAnswer = () => {
+  emits('incorrect-answer-clicked');
+  showQuestionDisplay.value = false;
+  resetScore();
+};
+
+
 const fetchRandomQuestion = async () => {
   try {
     const response = await fetch('/api/quiz');
@@ -21,6 +37,10 @@ const fetchRandomQuestion = async () => {
     }
     const data = await response.json();
     questionDto.value = data;
+
+    timerComponentRef.value.resetTimer();
+    timerComponentRef.value.startTimer();
+
   } catch (error) {
     console.error(error);
   }
@@ -65,16 +85,15 @@ const submitAnswer = (selectedOption) => {
           showCorrectMessage.value = true; // Show the "You answered correctly" message
           shouldUpdateQuestion.value = false; // Prevent question update
           console.log('Answer is correct.');
+          timerComponentRef.value.stopTimer();
           setTimeout(() => {
             showCorrectMessage.value = false; // Hide the message after 1 second
             shouldUpdateQuestion.value = true; // Allow question update
             console.log('Question will update.');
             fetchRandomQuestion();
-          }, 1000); // This timer is set to 3 seconds (3000 milliseconds)
+          }, 3000); // This timer is set to 3 seconds (3000 milliseconds)
         } else {
-          emits('incorrect-answer-clicked');
-          showQuestionDisplay.value = false;
-          resetScore();
+          handleWrongAnswer(); // Call the method for handling a wrong answer
           console.log('Answer is incorrect.');
           console.log('showQuestionDisplay:', showQuestionDisplay.value);
           console.log('GameMenu displayed:', showGameMenu.value);
@@ -99,6 +118,7 @@ onMounted(() => {
 </style>
 <template>
   <div class="flex flex-col items-center justify-center">
+    <TimerComponent :timeLeft="timeLeft" @timerExpired="handleTimerExpired" ref="timerComponentRef" />
     <div v-if="showQuestionDisplay && questionDto" class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
       <p class="text-gray-800 font-bold text-2xl">{{ questionDto.questionText }}</p>
       <div class="mt-4">
