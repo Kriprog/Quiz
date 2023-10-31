@@ -1,9 +1,9 @@
 <template>
   <div class="menu-container w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
-    <p class="text-gray-800 font-bold text-2xl">Game over!</p>
-    <p>Final Score: {{ highestSessionScore }}</p>
-    <p>High Score: {{ session.highscore }}</p>
-    <button @click="restartGame">Try again!</button>
+    <p class="text-gray-800 font-bold text-4xl mb-4">Game over!</p>
+    <p class="text-gray-800 mb-2">Final Score: <span class="font-bold text-xl">{{ highestSessionScore }}</span></p>
+    <p class="text-gray-800 mb-2">High Score: <span class="font-bold text-xl">{{ session.highscore }}</span></p>
+    <button class="btn" @click="restartGame">Try again!</button>
   </div>
 </template>
 
@@ -33,7 +33,7 @@ export default {
 <style scoped>
 .menu-container {
   text-align: center;
-  padding: 100px;
+  padding: 70px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
@@ -46,8 +46,14 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
-
-button:hover {
-  background-color: #0056b3;
+.btn {
+  background-color: rgb(9, 9, 9);
+  color: white;
+  font-weight: bold;
+  font-size: larger;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
 }
 </style>
