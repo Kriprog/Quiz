@@ -14,17 +14,30 @@ const emits = defineEmits();
 
 
 const fetchRandomQuestion = async () => {
+  console.log('session.userId:', session.userId);
+
   try {
-    const response = await fetch('/api/quiz');
+    const response = await fetch('/api/quiz', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: session.userId,
+      }),
+    });
+
     if (!response.ok) {
       throw Error('Network response was not ok');
     }
     const data = await response.json();
     questionDto.value = data;
+
   } catch (error) {
     console.error(error);
   }
 };
+
 
 const checkAnswer = async () => {
   try {
@@ -34,6 +47,7 @@ const checkAnswer = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        userId: session.userId,
         id: questionDto.value.id,
         selectedAnswer: selectedAnswer.value,
       }),

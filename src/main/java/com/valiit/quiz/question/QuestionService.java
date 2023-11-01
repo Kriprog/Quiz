@@ -1,5 +1,7 @@
 package com.valiit.quiz.question;
 
+import com.valiit.quiz.user.UserController;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,8 @@ import java.util.*;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
+    @Autowired
+    private UserController userController;
 
     @Autowired
     public QuestionService(QuestionRepository questionRepository) {
@@ -29,8 +33,10 @@ public class QuestionService {
 
     }
 
-    public QuestionDto getRandomQuestion() {
-        Question randomQuestion = questionRepository.findRandomQuestion();
+    public QuestionDto getRandomQuestion(Integer userId) {
+        Question randomQuestion = questionRepository.findRandomQuestionForUser(userId);
+
+        System.out.println("service:" + userId);
 
         QuestionDto questionDto = new QuestionDto();
         questionDto.setId(randomQuestion.getId());
@@ -48,11 +54,40 @@ public class QuestionService {
         return questionDto;
     }
 
-    public boolean checkAnswer(Integer id, String selectedAnswer) {
+//
+//    public QuestionDto getRandomQuestion() {
+//        Question randomQuestion = questionRepository.findRandomQuestion();
+//
+//        QuestionDto questionDto = new QuestionDto();
+//        questionDto.setId(randomQuestion.getId());
+//        questionDto.setQuestionText(randomQuestion.getQuestionText());
+//        List<String> options = new ArrayList<>();
+//        options.add(randomQuestion.getOption1());
+//        options.add(randomQuestion.getOption2());
+//        options.add(randomQuestion.getOption3());
+//        options.add(randomQuestion.getCorrectAnswer());
+//
+//        Shuffle.shuffle(options);
+//
+//        questionDto.setOptions(options);
+//
+//        return questionDto;
+//    }
+
+    public boolean checkAnswer(Integer userId, Integer id, String selectedAnswer) {
         String correctAnswer = questionRepository.findCorrectAnswerById(id);
+
         if (correctAnswer == null) {
             return false;
         }
-        return selectedAnswer != null && selectedAnswer.trim().equalsIgnoreCase(correctAnswer.trim());
+
+        boolean isCorrect = selectedAnswer != null && selectedAnswer.trim().equalsIgnoreCase(correctAnswer.trim());
+
+        if (isCorrect) {
+            userController.saveCorrectAnswer(userId, id);
+        }
+
+        return isCorrect;
     }
+
 }

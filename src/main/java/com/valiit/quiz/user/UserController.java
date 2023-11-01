@@ -68,6 +68,10 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Session-Token", sessionToken);
 
+        System.out.println("have not yet deleted user answers");
+        userService.deleteUserAnswers(userAccount.getId());
+        System.out.println("deleted user answers");
+
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(responseMap);
@@ -89,6 +93,12 @@ public class UserController {
         return errorResponse;
     }
 
+    public void saveCorrectAnswer(Integer answerId, Integer userId) {
+        System.out.println(answerId + userId);
+        userService.saveCorrectAnswer(answerId, userId);
+
+    }
+
     @GetMapping("highscores")
     public List<UserAccount> getTop10HighScores() {
         return userService.getTop10HighScores();
@@ -102,6 +112,7 @@ public class UserController {
         user.setHighscore_date(userHighscoreDto.getHighscore_date());
         userService.updateUserHighScore(userId, userHighscoreDto.getHighscore()); // Pass userId and new high score
     }
+
 
 }
 
