@@ -38,7 +38,15 @@ const handleWrongAnswer = () => {
 
 const fetchRandomQuestion = async () => {
   try {
-    const response = await fetch('/api/quiz');
+    const response = await fetch('/api/quiz', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: session.userId,
+      }),
+    });
     if (!response.ok) {
       throwCustomError();
     }
@@ -60,6 +68,7 @@ const checkAnswer = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        userId: session.userId,
         id: questionDto.value.id,
         selectedAnswer: selectedAnswer.value,
       }),

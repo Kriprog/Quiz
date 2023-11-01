@@ -30,17 +30,40 @@ create table Sessions
 
 );
 
+drop table user_answer;
+
+create table User_answer
+(
+    id        serial primary key,
+    user_id integer not null,
+    question_id integer not null
+);
+
+alter table User_answer add foreign key (user_id) references user_account(id);
+
+insert into user_answer (user_id, question_id)
+values (6, 66);
+
+
 insert into User_account (name, password, email, highscore)
 values ('FestKasutaja11', 'FestKasutaja11', 'Fest11@mail.ee', 3);
 
-
 ALTER USER postgres WITH PASSWORD 'postgres';
 
-DELETE FROM user_account;
+DELETE FROM user_answer;
 
 select * from user_account;
 
 ALTER TABLE user_account   ADD COLUMN highscore_date TIMESTAMP;
+
+DELETE from question;
+
+INSERT INTO question (question_text, correct_answer, option1, option2, option3)
+VALUES
+    ('What does the clean code principle "KISS" stand for?', 'Keep it Simple, Stupid', 'Complexity is key', 'Keenly Investigate Software Syntax', 'Kindly Ignore Source Structure'),
+    ('In clean code, what does the "Open-Closed Principle" recommend?', 'Software entities should be open for extension but closed for modification', 'Software entities should be constantly modified', 'Software entities should always be open for modification', 'Software entities should never be extended'),
+    ('What is the primary purpose of meaningful variable and function names in clean code?', 'Enhance code readability and maintainability', 'Minimize code length', 'Improve code performance', 'Optimize code reuse');
+
 
 
 INSERT INTO question (question_text, correct_answer, option1, option2, option3)

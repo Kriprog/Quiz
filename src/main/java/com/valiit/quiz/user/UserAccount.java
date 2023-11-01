@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collection;
 import java.util.Date;
 
 @Getter
@@ -25,6 +26,14 @@ public class UserAccount {
     private Date highscore_date;
 
 
+    @OneToMany(mappedBy = "user")
+    private Collection<UserAnswer> userAnswer;
 
+    public Collection<UserAnswer> getUserAnswer() {
+        return userAnswer;
+    }
 
+    public void setUserAnswer(Collection<UserAnswer> userAnswer) {
+        this.userAnswer = userAnswer;
+    }
 }

@@ -1,16 +1,17 @@
 package com.valiit.quiz.user;
 
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
 
     private static UserRepository userRepository;
+    @Autowired
+    private UserAnswerRepository userAnswerRepository;
 
     public UserService(UserRepository userRepository) {
         UserService.userRepository = userRepository;
@@ -49,4 +50,17 @@ public class UserService {
             System.out.println("High score updated successfully.");
         }
     }
+
+    @Transactional
+    public void deleteUserAnswers(Integer userId) {
+        userRepository.deleteAllUserAnswers(userId);
+    }
+
+    public void saveCorrectAnswer(Integer userId, Integer questionId) {
+        UserAnswer userAnswer = new UserAnswer();
+        userAnswer.setUserId(userId); // Set the user by finding it or using another method.
+        userAnswer.setQuestionId(questionId);
+        userAnswerRepository.save(userAnswer); // Save the new UserAnswer entity
+    }
+
 }
