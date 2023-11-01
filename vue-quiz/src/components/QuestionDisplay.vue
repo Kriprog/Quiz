@@ -1,21 +1,42 @@
 <script setup>
-import {ref, defineEmits } from 'vue';
+import {ref, defineEmits} from 'vue';
 import {updateScore, increaseHighScore, resetScore, session} from '@/stores/session';
 import GameMenu from './GameMenu.vue';
+import TimerComponent from './TimerComponent.vue'; // Import the Timer component
+const timerComponentRef = ref(null); // Create a ref for the TimerComponent
+const timeLeft = 30;
 const questionDto = ref(null);
 const selectedAnswer = ref(null);
 const answerSubmitted = ref(false);
 const isCorrectAnswer = ref(false);
 const showCorrectMessage = ref(false);
 const showQuestionDisplay = ref(true);
-const showGameMenu = ref(false);
 const shouldUpdateQuestion = ref(true);
 const emits = defineEmits();
+const isWaiting = ref(false);
+let finalScore = session.score;
+let highestSessionScore = finalScore;
+
+function throwCustomError() {
+  throw new Error("Network response error");
+}
+
+
+const handleTimerExpired = () => {
+  // Handle timer expiration here, e.g., show a message or take appropriate action
+  handleWrongAnswer(); // Call the method for handling a wrong answer
+};
+
+const handleWrongAnswer = () => {
+  emits('incorrect-answer-clicked');
+  showQuestionDisplay.value = false;
+  resetScore();
+  isWaiting.value = false;
+
+};
 
 
 const fetchRandomQuestion = async () => {
-  console.log('session.userId:', session.userId);
-
   try {
     const response = await fetch('/api/quiz', {
       method: 'POST',
@@ -26,18 +47,18 @@ const fetchRandomQuestion = async () => {
         id: session.userId,
       }),
     });
-
     if (!response.ok) {
-      throw Error('Network response was not ok');
+      throwCustomError();
     }
-    const data = await response.json();
-    questionDto.value = data;
+    questionDto.value = await response.json();
+
+    timerComponentRef.value.resetTimer();
+    timerComponentRef.value.startTimer();
 
   } catch (error) {
     console.error(error);
   }
 };
-
 
 const checkAnswer = async () => {
   try {
@@ -52,13 +73,11 @@ const checkAnswer = async () => {
         selectedAnswer: selectedAnswer.value,
       }),
     });
-
     if (!response.ok) {
-      throw Error('Network response was not ok');
+      throwCustomError();
     }
 
     const result = await response.json();
-
     answerSubmitted.value = true;
     isCorrectAnswer.value = result.correct;
     return result.correct;
@@ -70,29 +89,32 @@ const checkAnswer = async () => {
 };
 
 const submitAnswer = (selectedOption) => {
+  if (isWaiting.value) {
+    return;
+  }
+  isWaiting.value = true;
   selectedAnswer.value = selectedOption;
   checkAnswer(selectedOption)
       .then((isCorrect) => {
         if (isCorrect) {
           updateScore(1);
           increaseHighScore(1);
-          showCorrectMessage.value = true; // Show the "You answered correctly" message
-          shouldUpdateQuestion.value = false; // Prevent question update
-          console.log('Answer is correct.');
+
+          if (session.score > highestSessionScore) {
+            highestSessionScore = session.score;
+          }
+          showCorrectMessage.value = true;
+          shouldUpdateQuestion.value = false;
+
+          timerComponentRef.value.stopTimer();
           setTimeout(() => {
-            showCorrectMessage.value = false; // Hide the message after 1 second
-            shouldUpdateQuestion.value = true; // Allow question update
-            console.log('Question will update.');
+            showCorrectMessage.value = false;
+            shouldUpdateQuestion.value = true;
+            isWaiting.value = false;
             fetchRandomQuestion();
-          }, 1000); // This timer is set to 3 seconds (3000 milliseconds)
+          }, 1000);
         } else {
-          emits('incorrect-answer-clicked');
-          showQuestionDisplay.value = false;
-          resetScore();
-          console.log('Answer is incorrect.');
-          console.log('showQuestionDisplay:', showQuestionDisplay.value);
-          console.log('GameMenu displayed:', showGameMenu.value);
-          console.log('QuestionDisplay hidden:', showQuestionDisplay.value);
+          handleWrongAnswer();
         }
       })
       .catch((error) => {
@@ -101,7 +123,7 @@ const submitAnswer = (selectedOption) => {
 };
 
 
-import { onMounted } from 'vue';
+import {onMounted} from 'vue';
 
 onMounted(() => {
   fetchRandomQuestion();
@@ -113,26 +135,40 @@ onMounted(() => {
 </style>
 <template>
   <div class="flex flex-col items-center justify-center">
-    <div v-if="showQuestionDisplay && questionDto" class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
-      <p class="text-gray-800 font-bold text-2xl">{{ questionDto.questionText }}</p>
+    <TimerComponent :timeLeft="timeLeft" @timerExpired="handleTimerExpired" ref="timerComponentRef" />
+    <div v-if="showQuestionDisplay && questionDto"
+         class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
+      <p class="text-gray-800 font-bold text-2xl"> {{ questionDto.questionText }} </p>
       <div class="mt-4">
-        <div class="grid grid-cols-2 gap-4">
-          <button
-              v-for="option in questionDto.options"
-              :key="option"
-              @click="submitAnswer(option)"
-              class="responsive-square-button text-white text-1xl font-medium py-2 px-4 rounded bg-violet-500 hover:bg-violet-600 focus:outline-none"
-          >
-            {{ option }}
-          </button>
+        <div class="grid grid-cols-1 gap-4">
+          <div class="relative">
+            <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center" v-if="showCorrectMessage">
+              <div class="responsive-container">
+                <p class="text-lg text-gray-700 font-bold bigger-text">Correct answer!</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <button
+                  v-for="option in questionDto.options"
+                  :key="option"
+                  @click="submitAnswer(option)"
+                  class="responsive-square-button text-white text-1xl font-medium py-2 px-2 rounded bg-violet-500 hover:bg-violet-600 focus:outline-none"
+              >
+                {{ option }}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+            class="relative flex items-center bg-gray-100 text-gray-700 hover:text-gray-950 hover-bg-gray-50 transition duration-200"
+            style="padding: 15px; width: fit-content; border-radius: 10px; margin-top: 10px;"
+        ><span class="font-semibold">Your current score: {{ session.score }} </span>
         </div>
       </div>
-      <!-- Add a message display area for "You answered correctly" -->
-      <p v-if="showCorrectMessage" class="text-lg pt-5 text-green-500 font-bold">You answered correctly!</p>
     </div>
     <template v-else>
-      <!-- Menu component with the retryGame event handler -->
-      <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)" />
+      <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)"
+                :highestSessionScore="parseInt(highestSessionScore)"/>
     </template>
   </div>
 </template>
@@ -145,5 +181,24 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.responsive-container {
+  position: absolute;
+  background-color: white;
+  border-radius: 10px; /* Increase border radius for a more rounded look */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Adjust shadow properties */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 50%; /* Adjust to move it more to the bottom */
+  left: 50%; /* Adjust to move it more to the right */
+  transform: translate(-50%, -50%);
+  width: 60%; /* Adjust the width */
+  height: 40%; /* Adjust the height */
+}
+
+.bigger-text {
+  font-size: 2.5rem; /* Adjust the font size as needed */
 }
 </style>
