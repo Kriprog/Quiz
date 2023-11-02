@@ -8,6 +8,7 @@
           <th class="px-5 text-2xl font-bold mb-4 text-left"></th>
         </tr>
         <tr>
+          <th class="px-5 py-2 text-left">#</th> <!-- Add this column for numbers -->
           <th class="px-5 py-2 text-left">Name</th>
           <th class="px-5 py-2 text-left">High Score</th>
         </tr>
@@ -19,6 +20,7 @@
             class="bg-white bg-opacity-70"
             :class="{ 'highlighted-row': score.name === session.name }"
         >
+          <td class="px-5 py-2 border border-gray-200">{{ index + 1 }}</td> <!-- Display the ordinal position -->
           <td class="px-5 py-2 border border-gray-200">{{ score.name }}</td>
           <td class="px-5 py-2 border border-gray-200">{{ score.highscore }}</td>
         </tr>

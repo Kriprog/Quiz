@@ -52,20 +52,11 @@ values ('FestKasutaja11', 'FestKasutaja11', 'Fest11@mail.ee', 3);
 
 ALTER USER postgres WITH PASSWORD 'postgres';
 
-DELETE FROM user_answer;
+DELETE FROM user_account;
 
 select * from user_account;
 
 ALTER TABLE user_account   ADD COLUMN highscore_date TIMESTAMP;
-
-DELETE from question;
-
-INSERT INTO question (question_text, correct_answer, option1, option2, option3)
-VALUES
-    ('What does the clean code principle "KISS" stand for?', 'Keep it Simple, Stupid', 'Complexity is key', 'Keenly Investigate Software Syntax', 'Kindly Ignore Source Structure'),
-    ('In clean code, what does the "Open-Closed Principle" recommend?', 'Software entities should be open for extension but closed for modification', 'Software entities should be constantly modified', 'Software entities should always be open for modification', 'Software entities should never be extended'),
-    ('What is the primary purpose of meaningful variable and function names in clean code?', 'Enhance code readability and maintainability', 'Minimize code length', 'Improve code performance', 'Optimize code reuse');
-
 
 
 INSERT INTO question (question_text, correct_answer, option1, option2, option3)
@@ -93,7 +84,6 @@ VALUES
     ('What does clean code recommend about the use of "Global Variables" in code?', 'Minimize or avoid global variables to improve code maintainability', 'Use global variables extensively for simplicity', 'Use global variables for all variables in code', 'Global variables are mandatory in clean code'),
     ('What is the primary objective of "Continuous Integration" (CI) in clean code practices?', 'Continuously integrate code changes and run automated tests', 'Integrate code only once a month for stability', 'Ignore integration completely in clean code', 'Continuous integration is for code backups'),
     ('What is the main goal of "Encapsulation" according to clean code principles?', 'Hide implementation details and expose a simple interface', 'Expose all implementation details to improve transparency', 'No need for encapsulation in clean code', 'Encapsulation is only for security purposes'),
-    ('In clean code, what is the purpose of "Meaningful Test Names" in test-driven development (TDD)?', 'Improve the readability of tests and clarify their intent', 'Use random test names for diversity', 'Don''t name tests in TDD', 'Meaningful test names are irrelevant'),
     ('What is the primary goal of using intention-revealing names in clean code?', 'To make the code self-explanatory', 'To save characters in variable names', 'To confuse other developers', 'To follow industry trends'),
     ('Which of the following is an example of an intention-revealing variable name for storing a customer''s age?', 'customerAge', 'a', 'x', 'age1234'),
     ('In clean code, why should you avoid using misleading names for variables and functions?', 'To improve code readability and maintainability', 'To confuse other developers', 'To save memory space', 'To make the code more challenging to read'),
@@ -205,7 +195,6 @@ VALUES
     ('What is the main concept behind object-oriented programming (OOP)?', 'Organizing code into objects that encapsulate data and behavior.', 'Using global variables for all data storage.', 'Eliminating the need for functions.', 'Using only procedural programming.'),
     ('What is an "object" in the context of OOP?', 'An instance of a class that bundles data and methods.', 'A block of code used for calculations.', 'A single line of code in a program.', 'A database table.'),
     ('Why is not keeping track of code changes a common error for programmers?', 'Not tracking changes can lead to confusion and loss of code versions.', 'Keeping track of changes is unnecessary in programming.', 'Tracking changes is the sole responsibility of project managers.', 'Code changes are not important.'),
-    ('What is a common mistake when handling exceptions in code?', 'Swallowing exceptions without proper handling or logging.', 'Handling exceptions too aggressively.', 'Avoiding the use of exceptions entirely.', 'Not writing code that can throw exceptions.'),
     ('Why is it important to maintain a healthy work-life balance?', 'To prevent burnout, reduce stress, and improve overall well-being.', 'Work should always be the top priority.', 'Maintaining work-life balance has no impact on health.', 'Balancing work and life is essential only for individuals with high stress jobs.'),
     ('What are the potential consequences of consistently overworking without a proper balance?', 'Increased stress, burnout, and negative effects on physical and mental health.', 'Overworking leads to enhanced productivity and well-being.', 'Overworking has no consequences.', 'Overworking primarily affects job performance.'),
     ('How can one achieve a healthy work-life balance?', 'By setting boundaries, prioritizing self-care, and managing time effectively.', 'By focusing solely on work and neglecting personal life.', 'Balancing work and personal life is unattainable.', 'Achieving work-life balance is only possible for a select few.'),
