@@ -24,12 +24,8 @@ public class UserAccount {
     @Temporal(TemporalType.TIMESTAMP) // Use this annotation to specify the date and time type
     private Date highscore_date;
 
-
     @Getter
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Collection<UserAnswer> userAnswer;
 
-    public void setUserAnswer(Collection<UserAnswer> userAnswer) {
-        this.userAnswer = userAnswer;
-    }
 }
