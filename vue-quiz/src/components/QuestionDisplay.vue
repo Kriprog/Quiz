@@ -2,8 +2,8 @@
 import {ref, defineEmits} from 'vue';
 import {updateScore, increaseHighScore, resetScore, session} from '@/stores/session';
 import GameMenu from './GameMenu.vue';
-import TimerComponent from './TimerComponent.vue'; // Import the Timer component
-const timerComponentRef = ref(null); // Create a ref for the TimerComponent
+import TimerComponent from './TimerComponent.vue';
+const timerComponentRef = ref(null);
 const timeLeft = 30;
 const questionDto = ref(null);
 const selectedAnswer = ref(null);
@@ -22,13 +22,13 @@ function throwCustomError() {
 }
 
 const handleTimerExpired = () => {
-  // Handle timer expiration here, e.g., show a message or take appropriate action
-  handleWrongAnswer(); // Call the method for handling a wrong answer
+  handleWrongAnswer();
 };
 
 const handleWrongAnswer = () => {
   emits('incorrect-answer-clicked');
   showQuestionDisplay.value = false;
+  timerComponentRef.value.stopTimer();
   resetScore();
   isWaiting.value = false;
 };
@@ -46,7 +46,7 @@ const fetchRandomQuestion = async () => {
     });
 
     if (!response.ok) {
-      throwCustomError()
+      throwCustomError();
     }
 
     let question = await response.json()
@@ -136,55 +136,54 @@ onMounted(() => {
   fetchRandomQuestion();
 });
 
-
 </script>
-<style scoped>
-</style>
 <template>
   <div class="flex flex-col items-center justify-center">
-      <TimerComponent :timeLeft="timeLeft" @timerExpired="handleTimerExpired" ref="timerComponentRef" />
-      <div v-if="showQuestionDisplay && questionDto"
-           class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
-        <p class="text-gray-800 font-bold text-2xl"> {{ questionDto.questionText }} </p>
-        <div class="mt-4">
-          <div class="grid grid-cols-1 gap-4">
-            <div class="relative">
-              <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center" v-if="showCorrectMessage">
-                <div class="responsive-container">
-                  <p class="text-lg text-gray-700 font-bold bigger-text">Correct answer!</p>
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-4">
-                <button
-                    v-for="option in questionDto.options"
-                    :key="option"
-                    @click="submitAnswer(option)"
-                    class="responsive-square-button text-white text-1xl font-medium py-2 px-2 rounded bg-violet-500 hover:bg-violet-600 focus:outline-none"
-                >
-                  {{ option }}
-                </button>
+    <TimerComponent
+        :timeLeft="timeLeft"
+        @timerExpired="handleTimerExpired"
+        ref="timerComponentRef"/>
+    <div v-if="showQuestionDisplay && questionDto"
+         class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
+      <p class="text-gray-800 font-bold text-2xl"> {{ questionDto.questionText }} </p>
+      <div class="mt-4">
+        <div class="grid grid-cols-1 gap-4">
+          <div class="relative">
+            <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center" v-if="showCorrectMessage">
+              <div class="responsive-container">
+                <p class="text-lg text-gray-700 font-bold bigger-text">Correct answer!</p>
               </div>
             </div>
-          </div>
-          <div
-              class="relative flex items-center bg-gray-100 text-gray-700 hover:text-gray-950 hover-bg-gray-50 transition duration-200"
-              style="padding: 15px; width: fit-content; border-radius: 10px; margin-top: 10px;"
-          ><span class="font-semibold">Your current score: {{ session.score }} </span>
+            <div class="grid grid-cols-2 gap-4">
+              <button
+                  v-for="option in questionDto.options"
+                  :key="option"
+                  @click="submitAnswer(option)"
+                  class="responsive-square-button text-white text-1xl font-medium py-2 px-2 rounded bg-violet-500 hover:bg-violet-600 focus:outline-none"
+              >
+                {{ option }}
+              </button>
+            </div>
           </div>
         </div>
+        <div
+            class="relative flex items-center bg-gray-100 text-gray-700 hover:text-gray-950 hover-bg-gray-50 transition duration-200"
+            style="padding: 15px; width: fit-content; border-radius: 10px; margin-top: 10px;"
+        ><span class="font-semibold">Your current score: {{ session.score }} </span>
+        </div>
       </div>
-      <template v-else>
-        <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)"
-                  :highestSessionScore="parseInt(highestSessionScore)"/>
-      </template>
     </div>
-
+    <template v-else>
+      <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)"
+                :highestSessionScore="parseInt(highestSessionScore)"/>
+    </template>
+  </div>
 </template>
 
 <style scoped>
 .responsive-square-button {
-  width: 100%; /* Use 100% for responsive width */
-  padding-top: 15%; /* Set padding-top to create a square */
+  width: 100%;
+  padding-top: 15%;
   padding-bottom: 15%;
   display: flex;
   align-items: center;
@@ -194,16 +193,16 @@ onMounted(() => {
 .responsive-container {
   position: absolute;
   background-color: white;
-  border-radius: 10px; /* Increase border radius for a more rounded look */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Adjust shadow properties */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 50%; /* Adjust to move it more to the bottom */
-  left: 50%; /* Adjust to move it more to the right */
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width: 60%; /* Adjust the width */
-  height: 40%; /* Adjust the height */
+  width: 60%;
+  height: 40%;
 }
 
 .bigger-text {
