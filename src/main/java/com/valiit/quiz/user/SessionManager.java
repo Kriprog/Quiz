@@ -16,7 +16,7 @@ import java.util.UUID;
 public class SessionManager {
     // Define the length of your session token (e.g., 32 characters)
     private static final int TOKEN_LENGTH = 32;
-    public static Timestamp expirationTimestamp = calculateExpirationTimestamp(1);
+    public static Timestamp expirationTimestamp = calculateExpirationTimestamp(60);
 
 
     // Generate a random session token

@@ -55,6 +55,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(createErrorResponse("Invalid login credentials"));
         }
 
+        userService.deleteUserAnswers(userAccount.getId());
+        System.out.println("deleted user answers");
+
+        userService.deleteUserSessions(userAccount.getId());
+        System.out.println("deleted previous user sessions");
+
         String sessionToken = SessionManager.generateSessionToken();
         SessionManager.storeSessionToken(userAccount.getId(), sessionToken, String.valueOf(SessionManager.expirationTimestamp));
 
@@ -67,10 +73,6 @@ public class UserController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Session-Token", sessionToken);
-
-        System.out.println("have not yet deleted user answers");
-        userService.deleteUserAnswers(userAccount.getId());
-        System.out.println("deleted user answers");
 
         return ResponseEntity.ok()
                 .headers(headers)

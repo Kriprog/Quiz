@@ -7,6 +7,7 @@ import HighScores from "../components/HighScores.vue";
 import HighScoreView from "../views/HighScoreView.vue";
 import { session } from '@/stores/session';
 import TimerComponent from "@/components/TimerComponent.vue";
+import EndView from "@/views/EndView.vue";
 
 
 
@@ -30,6 +31,14 @@ const router = createRouter({
       component: WelcomePage,
       beforeEnter: requireAuth,
     },
+
+    {
+      path: '/end',
+      name: 'EndView',
+      component: EndView,
+      beforeEnter: requireAuth,
+    },
+
     {
       path: '/',
       name: 'signin',

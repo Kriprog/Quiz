@@ -62,5 +62,8 @@ public class UserService {
         userAnswer.setQuestionId(questionId);
         userAnswerRepository.save(userAnswer); // Save the new UserAnswer entity
     }
-
+@Transactional
+    public void deleteUserSessions(Integer userId) {
+    userRepository.deleteAllUserSessions(userId);
+    }
 }

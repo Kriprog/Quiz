@@ -41,6 +41,8 @@ create table User_answer
 
 alter table User_answer add foreign key (user_id) references user_account(id);
 
+alter table sessions add foreign key (user_id) references user_account(id);
+
 insert into user_answer (user_id, question_id)
 values (6, 66);
 
