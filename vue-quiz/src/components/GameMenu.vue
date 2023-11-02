@@ -35,9 +35,9 @@ export default {
   text-align: center;
   padding: 70px;
   border: 1px solid #ccc;
-  border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
+
 button {
   padding: 10px 20px;
   background-color: #007bff;
@@ -46,6 +46,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+
 .btn {
   background-color: rgb(9, 9, 9);
   color: white;

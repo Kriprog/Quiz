@@ -3,6 +3,7 @@ import {ref, defineEmits} from 'vue';
 import {updateScore, increaseHighScore, resetScore, session} from '@/stores/session';
 import GameMenu from './GameMenu.vue';
 import TimerComponent from './TimerComponent.vue';
+
 const timerComponentRef = ref(null);
 const timeLeft = 30;
 const questionDto = ref(null);
@@ -20,7 +21,6 @@ let highestSessionScore = finalScore;
 function throwCustomError() {
   throw new Error("Network response error");
 }
-
 
 const handleTimerExpired = () => {
   handleWrongAnswer();
@@ -119,20 +119,13 @@ onMounted(() => {
   fetchRandomQuestion();
 });
 
-
 </script>
 <template>
   <div class="flex flex-col items-center justify-center">
     <TimerComponent
         :timeLeft="timeLeft"
         @timerExpired="handleTimerExpired"
-        ref="timerComponentRef" />
-
-  <!--    <TimerComponent
-          :timeLeft="timeLeft"
-          @timerExpired="handleTimerExpired"
-          v-if="showQuestionDisplay && questionDto"
-      />-->
+        ref="timerComponentRef"/>
     <div v-if="showQuestionDisplay && questionDto"
          class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
       <p class="text-gray-800 font-bold text-2xl"> {{ questionDto.questionText }} </p>
@@ -172,8 +165,8 @@ onMounted(() => {
 
 <style scoped>
 .responsive-square-button {
-  width: 100%; /* Use 100% for responsive width */
-  padding-top: 15%; /* Set padding-top to create a square */
+  width: 100%;
+  padding-top: 15%;
   padding-bottom: 15%;
   display: flex;
   align-items: center;
@@ -183,16 +176,16 @@ onMounted(() => {
 .responsive-container {
   position: absolute;
   background-color: white;
-  border-radius: 10px; /* Increase border radius for a more rounded look */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4); /* Adjust shadow properties */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 50%; /* Adjust to move it more to the bottom */
-  left: 50%; /* Adjust to move it more to the right */
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width: 60%; /* Adjust the width */
-  height: 40%; /* Adjust the height */
+  width: 60%;
+  height: 40%;
 }
 
 .bigger-text {

@@ -25,7 +25,7 @@ export default {
 <template>
 
   <div>
-    <Header />
+    <Header/>
     <QuestionDisplay @incorrect-answer-clicked="showGameMenu = true" ref="questionDisplayRef"></QuestionDisplay>
   </div>
 </template>
