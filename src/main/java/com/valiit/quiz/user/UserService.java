@@ -22,7 +22,6 @@ public class UserService {
     }
 
     public List<UserAccount> getTop10HighScores() {
-        // Call the custom repository method to get the top 10 high scores
         return userRepository.findTop10HighScores();
     }
     public UserAccount findUserById(Integer id) {
@@ -34,7 +33,6 @@ public class UserService {
         if (user != null) {
             return user.getHighscore();
         }
-        // You might want to handle the case where the user is not found, e.g., return a default value or throw an exception.
         return null;
     }
     public void updateUserHighScore(Integer userId, Integer newHighScore) {
@@ -43,10 +41,9 @@ public class UserService {
         if (user != null) {
             System.out.println("User found. Current high score: " + user.getHighscore());
             user.setHighscore(newHighScore);
-            // Capture the current date and time
-            user.setHighscore_date(new Date()); // Set highscore_date to the current date and time
+            user.setHighscore_date(new Date());
             System.out.println("Updating high score to: " + newHighScore);
-            userRepository.save(user); // Use the save method to update the user
+            userRepository.save(user);
             System.out.println("High score updated successfully.");
         }
     }
@@ -58,9 +55,9 @@ public class UserService {
 
     public void saveCorrectAnswer(Integer userId, Integer questionId) {
         UserAnswer userAnswer = new UserAnswer();
-        userAnswer.setUserId(userId); // Set the user by finding it or using another method.
+        userAnswer.setUserId(userId);
         userAnswer.setQuestionId(questionId);
-        userAnswerRepository.save(userAnswer); // Save the new UserAnswer entity
+        userAnswerRepository.save(userAnswer);
     }
 @Transactional
     public void deleteUserSessions(Integer userId) {

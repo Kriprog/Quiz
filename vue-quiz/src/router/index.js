@@ -14,10 +14,8 @@ import EndView from "@/views/EndView.vue";
 
 const requireAuth = (to, from, next) => {
   if (session.sessionToken) {
-    // User is authenticated, allow access to the route
     next();
   } else {
-    // User is not authenticated, redirect to the sign-in page
     next({ name: 'signin' });
   }
 };
@@ -56,19 +54,19 @@ const router = createRouter({
       beforeEnter: requireAuth,
     },
     {
-      path: '/highscores', // Add the HighScores route
+      path: '/highscores',
       name: 'HighScores',
       component: HighScores,
       beforeEnter: requireAuth,
     },
     {
-      path: '/highscoreview', // Add the HighScoreView route
+      path: '/highscoreview',
       name: 'HighScoreView',
       component: HighScoreView,
       beforeEnter: requireAuth,
     },
     {
-      path: '/timer', // Use the desired URL path here
+      path: '/timer',
       name: 'Timer',
       component: TimerComponent,
     },
