@@ -2,8 +2,8 @@
 import {ref, defineEmits} from 'vue';
 import {updateScore, increaseHighScore, resetScore, session} from '@/stores/session';
 import GameMenu from './GameMenu.vue';
-import TimerComponent from './TimerComponent.vue'; // Import the Timer component
-const timerComponentRef = ref(null); // Create a ref for the TimerComponent
+import TimerComponent from './TimerComponent.vue';
+const timerComponentRef = ref(null);
 const timeLeft = 30;
 const questionDto = ref(null);
 const selectedAnswer = ref(null);
@@ -23,16 +23,15 @@ function throwCustomError() {
 
 
 const handleTimerExpired = () => {
-  // Handle timer expiration here, e.g., show a message or take appropriate action
-  handleWrongAnswer(); // Call the method for handling a wrong answer
+  handleWrongAnswer();
 };
 
 const handleWrongAnswer = () => {
   emits('incorrect-answer-clicked');
   showQuestionDisplay.value = false;
+  timerComponentRef.value.stopTimer();
   resetScore();
   isWaiting.value = false;
-
 };
 
 
@@ -122,11 +121,18 @@ onMounted(() => {
 
 
 </script>
-<style scoped>
-</style>
 <template>
   <div class="flex flex-col items-center justify-center">
-    <TimerComponent :timeLeft="timeLeft" @timerExpired="handleTimerExpired" ref="timerComponentRef" />
+    <TimerComponent
+        :timeLeft="timeLeft"
+        @timerExpired="handleTimerExpired"
+        ref="timerComponentRef" />
+
+  <!--    <TimerComponent
+          :timeLeft="timeLeft"
+          @timerExpired="handleTimerExpired"
+          v-if="showQuestionDisplay && questionDto"
+      />-->
     <div v-if="showQuestionDisplay && questionDto"
          class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
       <p class="text-gray-800 font-bold text-2xl"> {{ questionDto.questionText }} </p>
