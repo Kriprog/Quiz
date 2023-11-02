@@ -10,7 +10,6 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-// andmebaasi tabel user_account = UserAccount
 
 public class UserAccount {
     @Id
@@ -26,12 +25,9 @@ public class UserAccount {
     private Date highscore_date;
 
 
+    @Getter
     @OneToMany(mappedBy = "user")
     private Collection<UserAnswer> userAnswer;
-
-    public Collection<UserAnswer> getUserAnswer() {
-        return userAnswer;
-    }
 
     public void setUserAnswer(Collection<UserAnswer> userAnswer) {
         this.userAnswer = userAnswer;

@@ -4,8 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query(value = "SELECT q.id, q.question_text, q.correct_answer, q.option1, q.option2, q.option3 FROM question q " +
@@ -13,11 +11,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             "WHERE ua.question_id IS NULL " +
             "ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
     Question findRandomQuestionForUser(@Param("userId") Integer userId);
-
-
-
-//    @Query(value = "SELECT * FROM question ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
-//    Question findRandomQuestion();
 
     @Query(value = "SELECT q.correctAnswer FROM Question q WHERE q.id = :id")
     String findCorrectAnswerById(Integer id);

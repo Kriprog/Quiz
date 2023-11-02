@@ -18,5 +18,7 @@ public interface UserRepository extends CrudRepository<UserAccount, Integer> {
     @Query("DELETE FROM UserAnswer ua WHERE ua.user.id = :userId")
     void deleteAllUserAnswers(@Param("userId") Integer userId);
 
-
+    @Modifying
+    @Query("DELETE FROM Sessions s WHERE s.user.id = :userId")
+    void deleteAllUserSessions(@Param("userId") Integer userId);
 }

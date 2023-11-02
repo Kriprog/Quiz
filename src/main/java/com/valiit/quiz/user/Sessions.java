@@ -1,22 +1,22 @@
 package com.valiit.quiz.user;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
+import jakarta.persistence.*;
+
 @Entity
-public class UserAnswer {
+public class Sessions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    private Integer sessionToken;
 
     private Integer questionId;
+
+    @Column(name = "user_id")
+    private Integer userId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private UserAccount user;
+
 }

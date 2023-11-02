@@ -1,6 +1,4 @@
 package com.valiit.quiz.question;
-
-import com.valiit.quiz.user.UserAccount;
 import com.valiit.quiz.user.UserAccountId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
