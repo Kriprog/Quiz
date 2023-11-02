@@ -12,7 +12,6 @@ import Intro from "@/components/Intro.vue";
     <div class="hidden md:w-1/2 md:block p-4">
       <Intro/>
       <!-- Right Component -->
-      <!-- Add your second component here -->
     </div>
   </main>
 </template>

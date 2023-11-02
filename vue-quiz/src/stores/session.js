@@ -26,21 +26,17 @@ export function setSession(sessionToken, name, highscore, userId, score) {
 
 export async function clearSession() {
     try {
-        // Send a request to your back-end to invalidate the session
         const response = await fetch('/api/logout', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json', // Set the content type to JSON if you're sending JSON data
-                'X-Session-Token': session.sessionToken // Include the session token in the header
+                'Content-Type': 'application/json',
+                'X-Session-Token': session.sessionToken
             },
-            // Optionally, if you need to send data in the request body:
             body: JSON.stringify({
-                // Add any data you need to send in the body here
             })
         });
 
         if (response.ok) {
-            // Clear session data on the front-end
             session.sessionToken = null;
             session.name = null;
             session.highscore = 0;
@@ -57,15 +53,12 @@ export async function clearSession() {
     }
 }
 export function increaseHighScore(points) {
-    // Check if the current score is higher than the high score
     if (session.score > session.highscore) {
-        // Update the high score locally
         session.highscore = session.score;
-        session.highscore_date = new Date(); // Capture the current date and time
+        session.highscore_date = new Date();
         window.sessionStorage.setItem('highscore', session.highscore);
-        window.sessionStorage.setItem('highscore_date', session.highscore_date); // Store it in sessionStorage
+        window.sessionStorage.setItem('highscore_date', session.highscore_date);
 
-        // Send the new high score to the database (replace with your API endpoint)
         sendHighScoreToDatabase(session.highscore, session.highscore_date, session.userId)
             .then(() => {
                 console.log('High score updated in the database.');

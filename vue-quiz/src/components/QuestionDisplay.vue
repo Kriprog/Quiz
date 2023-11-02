@@ -21,7 +21,6 @@ function throwCustomError() {
   throw new Error("Network response error");
 }
 
-
 const handleTimerExpired = () => {
   // Handle timer expiration here, e.g., show a message or take appropriate action
   handleWrongAnswer(); // Call the method for handling a wrong answer
@@ -32,23 +31,38 @@ const handleWrongAnswer = () => {
   showQuestionDisplay.value = false;
   resetScore();
   isWaiting.value = false;
-
 };
-
 
 const fetchRandomQuestion = async () => {
   try {
-    const response = await fetch('/api/quiz');
-    if (!response.ok) {
-      throwCustomError();
-    }
-    questionDto.value = await response.json();
+    const response = await fetch('/api/quiz', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: session.userId,
+      }),
+    });
 
-    timerComponentRef.value.resetTimer();
-    timerComponentRef.value.startTimer();
+    if (!response.ok) {
+      throwCustomError()
+    }
+
+    let question = await response.json()
+
+    if (question != null) {
+      questionDto.value = question;
+
+      timerComponentRef.value.resetTimer();
+      timerComponentRef.value.startTimer();
+    } else {
+      throwCustomError()
+    }
 
   } catch (error) {
-    console.error(error);
+    console.log('no more questions')
+    await router.push('/end');
   }
 };
 
@@ -60,6 +74,7 @@ const checkAnswer = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        userId: session.userId,
         id: questionDto.value.id,
         selectedAnswer: selectedAnswer.value,
       }),
@@ -115,6 +130,7 @@ const submitAnswer = (selectedOption) => {
 
 
 import {onMounted} from 'vue';
+import router from "@/router";
 
 onMounted(() => {
   fetchRandomQuestion();
@@ -126,42 +142,43 @@ onMounted(() => {
 </style>
 <template>
   <div class="flex flex-col items-center justify-center">
-    <TimerComponent :timeLeft="timeLeft" @timerExpired="handleTimerExpired" ref="timerComponentRef" />
-    <div v-if="showQuestionDisplay && questionDto"
-         class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
-      <p class="text-gray-800 font-bold text-2xl"> {{ questionDto.questionText }} </p>
-      <div class="mt-4">
-        <div class="grid grid-cols-1 gap-4">
-          <div class="relative">
-            <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center" v-if="showCorrectMessage">
-              <div class="responsive-container">
-                <p class="text-lg text-gray-700 font-bold bigger-text">Correct answer!</p>
+      <TimerComponent :timeLeft="timeLeft" @timerExpired="handleTimerExpired" ref="timerComponentRef" />
+      <div v-if="showQuestionDisplay && questionDto"
+           class="w-full max-w-5xl p-4 bg-white bg-opacity-70 rounded-br-2xl rounded-bl-2xl shadow-lg">
+        <p class="text-gray-800 font-bold text-2xl"> {{ questionDto.questionText }} </p>
+        <div class="mt-4">
+          <div class="grid grid-cols-1 gap-4">
+            <div class="relative">
+              <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center" v-if="showCorrectMessage">
+                <div class="responsive-container">
+                  <p class="text-lg text-gray-700 font-bold bigger-text">Correct answer!</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <button
+                    v-for="option in questionDto.options"
+                    :key="option"
+                    @click="submitAnswer(option)"
+                    class="responsive-square-button text-white text-1xl font-medium py-2 px-2 rounded bg-violet-500 hover:bg-violet-600 focus:outline-none"
+                >
+                  {{ option }}
+                </button>
               </div>
             </div>
-            <div class="grid grid-cols-2 gap-4">
-              <button
-                  v-for="option in questionDto.options"
-                  :key="option"
-                  @click="submitAnswer(option)"
-                  class="responsive-square-button text-white text-1xl font-medium py-2 px-2 rounded bg-violet-500 hover:bg-violet-600 focus:outline-none"
-              >
-                {{ option }}
-              </button>
-            </div>
+          </div>
+          <div
+              class="relative flex items-center bg-gray-100 text-gray-700 hover:text-gray-950 hover-bg-gray-50 transition duration-200"
+              style="padding: 15px; width: fit-content; border-radius: 10px; margin-top: 10px;"
+          ><span class="font-semibold">Your current score: {{ session.score }} </span>
           </div>
         </div>
-        <div
-            class="relative flex items-center bg-gray-100 text-gray-700 hover:text-gray-950 hover-bg-gray-50 transition duration-200"
-            style="padding: 15px; width: fit-content; border-radius: 10px; margin-top: 10px;"
-        ><span class="font-semibold">Your current score: {{ session.score }} </span>
-        </div>
       </div>
+      <template v-else>
+        <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)"
+                  :highestSessionScore="parseInt(highestSessionScore)"/>
+      </template>
     </div>
-    <template v-else>
-      <GameMenu :latestScore="parseInt(session.score)" :highScore="parseInt(session.highscore)"
-                :highestSessionScore="parseInt(highestSessionScore)"/>
-    </template>
-  </div>
+
 </template>
 
 <style scoped>

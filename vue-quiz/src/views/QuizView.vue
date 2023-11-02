@@ -12,7 +12,7 @@ export default {
   data() {
     return {
       showGameMenu: false,
-      showQuestionDisplay: true, // or whatever your initial state is
+      showQuestionDisplay: true,
     };
   },
 };

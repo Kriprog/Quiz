@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +54,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(createErrorResponse("Invalid login credentials"));
         }
 
+        userService.deleteUserAnswers(userAccount.getId());
+        System.out.println("deleted user answers");
+
+        userService.deleteUserSessions(userAccount.getId());
+        System.out.println("deleted previous user sessions");
+
         String sessionToken = SessionManager.generateSessionToken();
         SessionManager.storeSessionToken(userAccount.getId(), sessionToken, String.valueOf(SessionManager.expirationTimestamp));
 
@@ -75,11 +80,9 @@ public class UserController {
 
     @PostMapping("/logout")
     public void logout(HttpServletRequest request) {
-        // Get the session token from the request
         String sessionToken = request.getHeader("X-Session-Token");
         System.out.println("This is what reaches UserController: " + sessionToken);
 
-        // Use the session token to invalidate the session on the back-end
         SessionManager.invalidateSession(sessionToken);
     }
 
@@ -89,19 +92,25 @@ public class UserController {
         return errorResponse;
     }
 
+    public void saveCorrectAnswer(Integer answerId, Integer userId) {
+        System.out.println(answerId + userId);
+        userService.saveCorrectAnswer(answerId, userId);
+
+    }
+
     @GetMapping("highscores")
     public List<UserAccount> getTop10HighScores() {
         return userService.getTop10HighScores();
     }
 
-    // Exception handling advice spring
     @PatchMapping("/users/highscore/{userId}")
     public void updateUserHighScore(@PathVariable Integer userId, @RequestBody UserHighscoreDto userHighscoreDto) {
         UserAccount user = userService.findUserById(userId);
         user.setHighscore(userHighscoreDto.getHighscore());
         user.setHighscore_date(userHighscoreDto.getHighscore_date());
-        userService.updateUserHighScore(userId, userHighscoreDto.getHighscore()); // Pass userId and new high score
+        userService.updateUserHighScore(userId, userHighscoreDto.getHighscore());
     }
+
 
 }
 

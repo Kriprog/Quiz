@@ -30,16 +30,31 @@ create table Sessions
 
 );
 
-insert into User_account (name, password, email, highscore)
-values ('RestKasutaja11', 'RestKasutaja11', 'Rest11@mail.ee', 3);
+drop table user_answer;
 
+create table User_answer
+(
+    id        serial primary key,
+    user_id integer not null,
+    question_id integer not null
+);
+
+alter table User_answer add foreign key (user_id) references user_account(id);
+
+alter table sessions add foreign key (user_id) references user_account(id);
+
+insert into user_answer (user_id, question_id)
+values (6, 66);
+
+
+insert into User_account (name, password, email, highscore)
+values ('FestKasutaja11', 'FestKasutaja11', 'Fest11@mail.ee', 3);
 
 ALTER USER postgres WITH PASSWORD 'postgres';
 
-DELETE FROM question;
+DELETE FROM user_account;
 
 select * from user_account;
-select * from question;
 
 ALTER TABLE user_account   ADD COLUMN highscore_date TIMESTAMP;
 
