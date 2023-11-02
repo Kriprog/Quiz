@@ -1,5 +1,6 @@
 package com.valiit.quiz.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,7 @@ public class UserAccount {
 
     @Getter
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonIgnore
     private Collection<UserAnswer> userAnswer;
 
 }
