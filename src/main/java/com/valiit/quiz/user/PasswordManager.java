@@ -1,7 +1,5 @@
 package com.valiit.quiz.user;
 
-import org.springframework.web.bind.annotation.GetMapping;
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

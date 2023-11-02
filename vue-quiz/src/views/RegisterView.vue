@@ -12,7 +12,6 @@ import Intro from "@/components/Intro.vue";
     <div class="w-full md:w-1/2 p-4">
       <Register/>
       <!-- Right Component -->
-      <!-- Add your second component here -->
     </div>
   </main>
 </template>

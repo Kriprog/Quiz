@@ -3,7 +3,6 @@ import {ref, defineEmits} from 'vue';
 import {updateScore, increaseHighScore, resetScore, session} from '@/stores/session';
 import GameMenu from './GameMenu.vue';
 import TimerComponent from './TimerComponent.vue';
-
 const timerComponentRef = ref(null);
 const timeLeft = 30;
 const questionDto = ref(null);
@@ -34,20 +33,36 @@ const handleWrongAnswer = () => {
   isWaiting.value = false;
 };
 
-
 const fetchRandomQuestion = async () => {
   try {
-    const response = await fetch('/api/quiz');
+    const response = await fetch('/api/quiz', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: session.userId,
+      }),
+    });
+
     if (!response.ok) {
       throwCustomError();
     }
-    questionDto.value = await response.json();
 
-    timerComponentRef.value.resetTimer();
-    timerComponentRef.value.startTimer();
+    let question = await response.json()
+
+    if (question != null) {
+      questionDto.value = question;
+
+      timerComponentRef.value.resetTimer();
+      timerComponentRef.value.startTimer();
+    } else {
+      throwCustomError()
+    }
 
   } catch (error) {
-    console.error(error);
+    console.log('no more questions')
+    await router.push('/end');
   }
 };
 
@@ -59,6 +74,7 @@ const checkAnswer = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        userId: session.userId,
         id: questionDto.value.id,
         selectedAnswer: selectedAnswer.value,
       }),
@@ -114,6 +130,7 @@ const submitAnswer = (selectedOption) => {
 
 
 import {onMounted} from 'vue';
+import router from "@/router";
 
 onMounted(() => {
   fetchRandomQuestion();

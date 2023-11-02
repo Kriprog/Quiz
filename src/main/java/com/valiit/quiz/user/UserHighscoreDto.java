@@ -13,5 +13,5 @@ public class UserHighscoreDto {
 
     private Integer id;
     private Integer highscore;
-    private Date highscore_date; // Add a Date field for highscore_date
+    private Date highscore_date;
 }
